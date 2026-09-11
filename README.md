@@ -2,7 +2,7 @@
 
 **Turn recordings into variations.** A multilayer random variation sampler for REAPER, designed for game audio and sound design.
 
-![AB ReaLayer interface](assets/AB-ReaLayer.png)
+![AB ReaLayer interface](assets/ABReaLayerHero.png)
 
 - Four drag-and-drop WAV layers with automatic region detection.
 - Independent volume, pan, pitch, reverse chance and envelopes.
