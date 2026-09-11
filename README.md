@@ -28,7 +28,6 @@ A 64-bit REAPER installation with enough free memory is recommended. Each instan
 ## Documentation
 
 - [User guide](docs/USER-GUIDE.md)
-- [Repository setup and updates](SETUP.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Workstation checks](docs/ACCEPTANCE.md)
 
