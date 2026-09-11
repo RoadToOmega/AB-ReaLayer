@@ -19,7 +19,7 @@ from ui_layout import WIDTH,HEIGHT,OPEN_WIDTH,OPEN_HEIGHT,RECTS,WORK_DY,card_rec
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);ap.add_argument("--case");args=ap.parse_args()
     root=Path(__file__).resolve().parents[1];out=args.output.resolve();effects=out/'profile/Effects';effects.mkdir(parents=True,exist_ok=True)
-    source=(root/'VariationSampler-M11.jsfx').read_text();report=[]
+    source=(root/'AB_ReaSampler.jsfx').read_text();report=[]
     # Contract and cross-thread ownership guard, including the M7 right-click regression.
     headers=re.findall(r'^slider\d+:[^\n]+',source,re.M)
     contract=json.loads((root/'src/parameter-contract.json').read_text())

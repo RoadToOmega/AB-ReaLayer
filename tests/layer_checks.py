@@ -19,7 +19,7 @@ def main():
     ap.add_argument('--output',type=Path,required=True); ap.add_argument('--smoke',action='store_true')
     args=ap.parse_args(); out=args.output.resolve(); effects=out/'profile/Effects'
     effects.mkdir(parents=True,exist_ok=True)
-    src=Path(__file__).resolve().parents[1]/'VariationSampler-M11.jsfx'
+    src=Path(__file__).resolve().parents[1]/'AB_ReaSampler.jsfx'
     code=src.read_text(); (effects/src.name).write_text(code)
     common=[str(args.reaper.resolve()),'-newinst','-nosplash','-ignoreerrors','-cfgfile',str(out/'profile/reaper.ini')]
     results=[]

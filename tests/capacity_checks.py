@@ -9,7 +9,7 @@ from layout import BANK_CAPACITY,STRIDE,MAXMEM
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);a=ap.parse_args()
- root=Path(__file__).resolve().parents[1];src=root/'VariationSampler-M11.jsfx';source=src.read_text();out=a.output.resolve();effects=out/'profile/Effects';effects.mkdir(parents=True,exist_ok=True);results=[]
+ root=Path(__file__).resolve().parents[1];src=root/'AB_ReaSampler.jsfx';source=src.read_text();out=a.output.resolve();effects=out/'profile/Effects';effects.mkdir(parents=True,exist_ok=True);results=[]
  assert MAXMEM<128000000
  for ch in (1,2):
   for over in (0,1):

@@ -1,6 +1,6 @@
 # AB ReaLayer M11 workstation acceptance — 0.11.1
 
-Install `VariationSampler-M11.jsfx` alongside M10. Only the main JSFX belongs in
+Install `AB_ReaSampler.jsfx` alongside M10. Only the main JSFX belongs in
 REAPER's Effects folder. Start in a new project, then test a copy of saved work.
 
 1. **GUI/startup:** open the plugin on your Mac, resize and move between Retina

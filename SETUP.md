@@ -35,7 +35,7 @@ The workflow requests contents:write only for publication and uses GitHub's buil
 
 If someone pushes while the index is being built, a non-fast-forward push can fail safely. Rerun the workflow against current main; do not force-push.
 
-Wait for BOTH jobs to pass. Open index.xml and check that it contains a reapack entry for VariationSampler-M11.jsfx, a version and a source URL containing a 40-character commit hash. An empty index means publication has not completed. GitHub Pages is not required.
+Wait for BOTH jobs to pass. Open index.xml and check that it contains a reapack entry for AB_ReaSampler.jsfx, a version and a source URL containing a 40-character commit hash. An empty index means publication has not completed. GitHub Pages is not required.
 
 ## 4. Install and share
 
@@ -74,7 +74,7 @@ git commit -m "Release AB ReaLayer 0.11.2"
 git push
 ```
 
-Check Actions again. Users can then use ReaPack → Synchronize packages. Do not reuse a published version for changed plugin bytes, rename the package path, delete historical index entries, or regenerate old release downloads from a moving branch. The workflow uses commit URLs and does not amend published versions.
+Check Actions again. Users can then use ReaPack → Synchronize packages. Do not reuse a published version for changed plugin bytes or regenerate old release downloads from a moving branch. The 0.11.3 filename migration deliberately creates a new package identity; keep AB_ReaSampler.jsfx stable for future releases. Git history retains the original files after the indexer retires the deleted package. The workflow uses commit URLs and does not amend published versions.
 
 You can optionally create matching Git tags/releases after publication; these are not required for ReaPack delivery.
 
@@ -82,7 +82,7 @@ You can optionally create matching Git tags/releases after publication; these ar
 
 | File or folder | Purpose |
 |---|---|
-| Instruments/VariationSampler-M11.jsfx | The single installable package |
+| Instruments/AB_ReaSampler.jsfx | The single installable package |
 | src/ | Editable generator and DSP/GUI sources |
 | release.json | Version, author, package name and changelog |
 | .github/workflows/reapack.yml | Build check and catalogue publication |
@@ -94,7 +94,7 @@ You can optionally create matching Git tags/releases after publication; these ar
 | tests/ | Existing REAPER test runners; REAPER is supplied separately |
 | docs/ | User guide, architecture and prior verification reports |
 
-The root VariationSampler-M11.jsfx is generated for local test compatibility and is ignored by Git; Instruments/ contains the tracked distributable. Only Instruments is intended to become a ReaPack category. Test fixtures and generator files are explicitly excluded from indexing.
+The root AB_ReaSampler.jsfx is generated for local test compatibility and is ignored by Git; Instruments/ contains the tracked distributable. Only Instruments is intended to become a ReaPack category. Test fixtures and generator files are explicitly excluded from indexing.
 
 ## Verification limits
 

@@ -11,7 +11,7 @@ from lifecycle_checks import read4
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--reaper',required=True,type=Path); ap.add_argument('--output',required=True,type=Path)
     args=ap.parse_args(); out=args.output.resolve(); effects=out/'profile/Effects'; effects.mkdir(parents=True,exist_ok=True)
-    src=Path(__file__).resolve().parents[1]/'VariationSampler-M11.jsfx'; code=src.read_text()
+    src=Path(__file__).resolve().parents[1]/'AB_ReaSampler.jsfx'; code=src.read_text()
     common=[str(args.reaper.resolve()),'-newinst','-nosplash','-ignoreerrors','-cfgfile',str(out/'profile/reaper.ini')]
     wav=out/'source.wav'; wavfile.write(wav,48000,np.full(96000,.05,np.float32))
     empty=[dict(path='',frames=0,ch=1,rate=48000,regions=[]) for _ in range(4)]

@@ -13,4 +13,4 @@ Thumbs.db
 *.reapeaks
 *.zip
 /test-output/
-/VariationSampler-M11.jsfx
+/*.jsfx

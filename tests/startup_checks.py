@@ -8,7 +8,7 @@ from edit_checks import state6
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);a=ap.parse_args()
     root=Path(__file__).resolve().parents[1];out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
-    source=(root/'VariationSampler-M11.jsfx').read_text();report=[]
+    source=(root/'AB_ReaSampler.jsfx').read_text();report=[]
     sys.path.insert(0,str(root/'src'));from eel_syntax import validate_literals
     validate_literals(source)
     broken=source+'\nstartup_invalid=1e10;\n'

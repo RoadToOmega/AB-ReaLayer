@@ -18,7 +18,7 @@ def main():
  reports=[];stats={};snapshots={};base=LIMITER_BASE+20000;stride=3078;length=4*stride
  empty=[dict(path='',frames=0,ch=1,rate=48000,regions=[]) for _ in range(4)]
  params=[-4,0,-1,2,0,-1]+[v for i in range(4) for v in (0,0,0,1,0,0,12345+i*104729,0,1,0,0,0)]+[0]*16
- for version,src in [('M9',baseline),('M10',root/'VariationSampler-M11.jsfx')]:
+ for version,src in [('M9',baseline),('M10',root/'AB_ReaSampler.jsfx')]:
   source=src.read_text()
   for count in [1,4]:
    name=f'{version}_{count}';work=out/name;effects=work/'profile/Effects';effects.mkdir(parents=True,exist_ok=True)
@@ -67,5 +67,5 @@ check()
   assert np.array_equal(snapshots[f'M9_{count}'],snapshots[f'M10_{count}']),(count,'PCM/peaks/region mismatch')
   ratio=stats[f'M9_{count}']['seconds']/stats[f'M10_{count}']['seconds'];assert ratio>1,(count,'No measured speedup')
   reports.append(dict(test=f'native_load_{count}_layers',status='PASS',duration_seconds=a.seconds,speedup=ratio,baseline=stats[f'M9_{count}'],updated=stats[f'M10_{count}']))
- (out/'loading-results.json').write_text(json.dumps(dict(source_sha256=hashlib.sha256((root/'VariationSampler-M11.jsfx').read_bytes()).hexdigest(),baseline_sha256=hashlib.sha256(baseline.read_bytes()).hexdigest(),passed=len(reports),results=reports),indent=2)+'\n');print('PASS',len(reports))
+ (out/'loading-results.json').write_text(json.dumps(dict(source_sha256=hashlib.sha256((root/'AB_ReaSampler.jsfx').read_bytes()).hexdigest(),baseline_sha256=hashlib.sha256(baseline.read_bytes()).hexdigest(),passed=len(reports),results=reports),indent=2)+'\n');print('PASS',len(reports))
 if __name__=='__main__':main()

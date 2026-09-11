@@ -13,7 +13,7 @@ from parameters import SOUND,LOCKED,SOUND_DEFAULTS
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);a=ap.parse_args()
  root=Path(__file__).resolve().parents[1];out=a.output.resolve();effects=out/'profile/Effects';effects.mkdir(parents=True,exist_ok=True)
- source=(root/'VariationSampler-M11.jsfx').read_text();reports=[]
+ source=(root/'AB_ReaSampler.jsfx').read_text();reports=[]
  par=[-4,0,-1,2,0,-1]+[v for i in range(4) for v in (0,0,0,1,0,0,12345+i*104729,0,1,3,3,.2)]+[v for _ in range(4) for v in (10,20)]+[0,0]+[50]*4+[0,1357911]
  layers=[]
  for i in range(4):

@@ -266,11 +266,11 @@ output=output.replace('V0.11.1',f'V{RELEASE["version"]}')
 output=output.replace('author:Original implementation for Multi Layer Sampler',f'author:{RELEASE["author"]}')
 from eel_syntax import validate_literals
 validate_literals(output)
-(ROOT/'VariationSampler-M11.jsfx').write_text(output)
-print('Built',ROOT/'VariationSampler-M11.jsfx',len(output),'bytes')
+(ROOT/'AB_ReaSampler.jsfx').write_text(output)
+print('Built',ROOT/'AB_ReaSampler.jsfx',len(output),'bytes')
 
 # Only this category folder is indexed. The root copy serves existing test runners.
-package=ROOT/'Instruments/VariationSampler-M11.jsfx'
+package=ROOT/'Instruments/AB_ReaSampler.jsfx'
 package.parent.mkdir(exist_ok=True)
 meta='// @description '+RELEASE['description']+'\n// @version '+RELEASE['version']+'\n// @author '+RELEASE['author']+'\n'
 meta+='// @about\n//   AB ReaLayer - Multilayer Random Variation Sampler for REAPER.\n//   Designed for game audio and sound design workflows.\n// @changelog\n'

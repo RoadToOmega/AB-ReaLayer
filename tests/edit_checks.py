@@ -20,7 +20,7 @@ def state6(layers):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--reaper',required=True,type=Path); ap.add_argument('--output',required=True,type=Path)
     args=ap.parse_args(); out=args.output.resolve(); effects=out/'profile/Effects'; effects.mkdir(parents=True,exist_ok=True)
-    src=Path(__file__).resolve().parents[1]/'VariationSampler-M11.jsfx'; code=src.read_text()
+    src=Path(__file__).resolve().parents[1]/'AB_ReaSampler.jsfx'; code=src.read_text()
     # These deterministic hooks temporarily call GUI-owned routines from @block.
     # Disable the idle GUI in these copies so there is exactly one test owner.
     driver_code=code.split('\n@gfx ')[0]+'\n@gfx 1100 720\n// GUI routines are owned by the deterministic test driver.\n'

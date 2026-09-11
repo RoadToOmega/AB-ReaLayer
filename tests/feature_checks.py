@@ -11,7 +11,7 @@ from lifecycle_checks import read4
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);a=ap.parse_args()
  root=Path(__file__).resolve().parents[1];out=a.output.resolve();effects=out/'profile/Effects';effects.mkdir(parents=True,exist_ok=True)
- src=root/'VariationSampler-M11.jsfx';source=src.read_text();results=[]
+ src=root/'AB_ReaSampler.jsfx';source=src.read_text();results=[]
  empty=[dict(path='',frames=0,ch=1,rate=48000,regions=[]) for _ in range(4)]
  def params(reverse=(0,0,0,0),limiter=0):return [-4,0,-1,2,0,-1]+[v for i in range(4) for v in (0,0,0,1,0,4,12345+i*104729,0,1,0,0,0)]+[0]*8+[0,int(limiter)]+list(reverse)
  def render(name,layers,par,events=(),hook='',block='',before='',rate=48000,recall=False):

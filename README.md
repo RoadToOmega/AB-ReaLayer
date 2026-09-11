@@ -20,9 +20,9 @@ https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/main/index.xml
 
 Only the JSFX is installed; no companion script, Python or Ruby is needed to use it. Source WAVs are not bundled.
 
-## Existing manual installations
+## Existing installations and the 0.11.3 filename change
 
-Keep the old manually installed file if saved projects reference it. ReaPack installs into its own repository/category directory and does not automatically migrate those project references. Use the ReaPack-managed copy for new instances. Keep the repository name and Instruments/VariationSampler-M11.jsfx path stable after publication.
+Version 0.11.3 uses `AB_ReaSampler.jsfx` and appears as a new package identity in ReaPack. Synchronize the repository, then select this filename in Browse packages and install it for new instances. Keep the old installed file if saved projects reference it. If ReaPack offers to uninstall an obsolete package, retain it until those projects have been migrated. ReaPack installs into its own repository/category directory and does not automatically migrate those project references. Use the ReaPack-managed copy for new instances. Keep the repository name and Instruments/AB_ReaSampler.jsfx path stable after publication.
 
 ## Requirements and limits
 
@@ -44,7 +44,7 @@ python3 src/build.py
 python3 tools/check_package.py
 ```
 
-Commit the generated Instruments/VariationSampler-M11.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.
+Commit the generated Instruments/AB_ReaSampler.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.
 
 ## Licence
 

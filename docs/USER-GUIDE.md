@@ -1,18 +1,19 @@
-# AB ReaLayer — Milestone 11 (0.11.1)
+# AB ReaLayer — 0.11.3
 
 A multilayer random variation sampler for REAPER, built as a self-contained JSFX. Each WAV can contain
 multiple variations. Detection separates them into regions; MIDI chooses a new
 region according to each layer's selection mode.
 
 The plugin browser name is `AB_ReaLayer`; the GUI wordmark is **AB Rea/Layer**.
-The install filename remains `VariationSampler-M11.jsfx` so existing projects
-continue to find the same effect.
+The install filename is `AB_ReaSampler.jsfx` from version 0.11.3.
+Keep earlier installations for saved projects that reference the previous filename;
+installing this package does not rewrite saved project references.
 
 ## Install
 
 1. In REAPER, choose **Options → Show REAPER resource path in explorer/finder**.
-2. Copy `VariationSampler-M11.jsfx` into the `Effects` folder (a subfolder is fine).
-3. Refresh the FX browser and add **JS: AB_ReaLayer (0.11.1)**.
+2. Copy `AB_ReaSampler.jsfx` into the `Effects` folder (a subfolder is fine).
+3. Refresh the FX browser and add **JS: AB_ReaLayer**.
 4. Drop one to four mono/stereo WAVs onto the layer cards. Multiple files fill
    consecutive slots starting from the hovered card.
 

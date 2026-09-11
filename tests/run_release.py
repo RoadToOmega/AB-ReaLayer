@@ -7,7 +7,7 @@ SUITES=('startup','gui','feature','macro','capacity','layer','lifecycle','harden
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--reaper',required=True,type=Path);ap.add_argument('--output',required=True,type=Path);a=ap.parse_args()
     root=Path(__file__).resolve().parents[1];out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
-    src=root/'VariationSampler-M11.jsfx';before=src.read_bytes()
+    src=root/'AB_ReaSampler.jsfx';before=src.read_bytes()
     subprocess.run([sys.executable,str(root/'src/build.py')],check=True)
     assert before==src.read_bytes(),'Distributed JSFX differs from the deterministic source build'
     digest=hashlib.sha256(before).hexdigest();reports=[]

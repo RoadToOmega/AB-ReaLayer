@@ -1,17 +1,18 @@
 // @description AB ReaLayer
-// @version 0.11.2
+// @version 0.11.3
 // @author Alec Bathman
 // @about
 //   AB ReaLayer - Multilayer Random Variation Sampler for REAPER.
 //   Designed for game audio and sound design workflows.
 // @changelog
-//   Publish the Alec Bathman header and game-audio description under a new version.
-//   Resolve the ReaPack catalogue conflict caused by differing 0.11.1 files in Git history.
-//   Sampler audio and GUI behaviour are unchanged.
+//   Rename the installable file to AB_ReaSampler.jsfx.
+//   Update generator, checks, documentation and test-runner paths.
+//   Install the renamed ReaPack package for new instances; retain legacy installations for saved projects.
+//   Audio processing and controls are unchanged.
 
 desc:AB_ReaLayer
 author:Alec Bathman
-version:0.11.2
+version:0.11.3
 about:
   AB ReaLayer - Multilayer Random Variation Sampler for REAPER.
   Designed for game audio and sound design workflows.
@@ -4837,7 +4838,7 @@ l4_snapshot();
  master_rect(0,0,1240,800,.055,.07,.09);
  master_rect(0,0,1240,76,.085,.105,.13);
  master_text(22,18,470,"AB Rea/Layer",23,0);
- master_text(24,45,470,"Multilayer Random Variation Sampler for REAPER     V0.11.2",10,1);
+ master_text(24,45,470,"Multilayer Random Variation Sampler for REAPER     V0.11.3",10,1);
  master_control(570,14,120,"Master output",1,0);
  master_button(710,20,148,atomic_get(master_protection)==3 ? "Limiter: tails" : slider64>=.5 ? "Limiter ON" : "Limiter OFF",!master_action_locked(64),slider64>=.5) ? master_put(64,slider64<.5,1);
  sprintf(#master_gr,"GR %.1f dB  /  -0.1 dBFS",atomic_get(limiter_meter));master_text(710,54,158,#master_gr,10,3);

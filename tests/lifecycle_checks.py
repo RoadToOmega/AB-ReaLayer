@@ -36,7 +36,7 @@ def read4(path):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--reaper',required=True,type=Path); ap.add_argument('--output',required=True,type=Path)
     args=ap.parse_args(); out=args.output.resolve(); effects=out/'profile/Effects'; effects.mkdir(parents=True,exist_ok=True)
-    src=Path(__file__).resolve().parents[1]/'VariationSampler-M11.jsfx'; code=src.read_text()
+    src=Path(__file__).resolve().parents[1]/'AB_ReaSampler.jsfx'; code=src.read_text()
     common=[str(args.reaper.resolve()),'-newinst','-nosplash','-ignoreerrors','-cfgfile',str(out/'profile/reaper.ini')]
     paths=[]; audio=[]; layers=[]
     for i in range(4):
