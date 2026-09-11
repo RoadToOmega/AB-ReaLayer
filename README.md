@@ -60,4 +60,4 @@ Selling the plugin, selling modified versions, or including its code in paid sof
 
 Audio created using AB ReaLayer is yours to use and sell, subject to the licences of your source samples. No royalties or attribution to AB ReaLayer are required.
 
-AB ReaLayer is source-available software released under the **AB ReaLayer Licence — Free Use, No Resale**. See [LICENSE](LICENSE) for the full terms.
+AB ReaLayer is source-available software released under the **AB ReaLayer Licence — Free Use, No Resale**.
