@@ -1,0 +1,162 @@
+{
+  "host": "REAPER 7.79 Linux, offscreen JSFX graphics",
+  "source_sha256": "b777f3f7618dfa291f7d28cbd1559588354282237d4d88351e398bab0823ca3b",
+  "passed": 16,
+  "results": [
+    {
+      "test": "parameter_contract_and_thread_ownership",
+      "status": "PASS",
+      "parameters": 70
+    },
+    {
+      "test": "play",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "play.png"
+    },
+    {
+      "test": "edit",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "edit.png"
+    },
+    {
+      "test": "detect",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "detect.png"
+    },
+    {
+      "test": "settings",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "settings.png"
+    },
+    {
+      "test": "numeric",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "numeric.png"
+    },
+    {
+      "test": "small",
+      "status": "PASS",
+      "dimensions": [
+        1100,
+        720
+      ],
+      "interaction_assertions": 0,
+      "image": "small.png"
+    },
+    {
+      "test": "compact",
+      "status": "PASS",
+      "dimensions": [
+        880,
+        576
+      ],
+      "interaction_assertions": 0,
+      "image": "compact.png"
+    },
+    {
+      "test": "large",
+      "status": "PASS",
+      "dimensions": [
+        1860,
+        1200
+      ],
+      "interaction_assertions": 0,
+      "image": "large.png"
+    },
+    {
+      "test": "interactions",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 9,
+      "image": "interactions.png"
+    },
+    {
+      "test": "edit_actions",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 3,
+      "image": "edit_actions.png"
+    },
+    {
+      "test": "m9_controls",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 5,
+      "image": "m9_controls.png"
+    },
+    {
+      "test": "m10_controls",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "m10_controls.png"
+    },
+    {
+      "test": "chaos",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "chaos.png"
+    },
+    {
+      "test": "reset_sound",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "reset_sound.png"
+    },
+    {
+      "test": "path_tooltip",
+      "status": "PASS",
+      "dimensions": [
+        1550,
+        1000
+      ],
+      "interaction_assertions": 0,
+      "image": "path_tooltip.png"
+    }
+  ]
+}

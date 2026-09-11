@@ -1,0 +1,44 @@
+// Audio-only master stage. GUI reads limiter_meter through atomics.
+// Fixed-delay stereo link; monotonic peak deque is amortized O(1) per sample.
+function limiter_configure() (
+  limiter_rate!=srate ? (
+    limiter_rate=srate;limiter_base=LIMITER_BASE;
+    limiter_queue_value=limiter_base+8192;limiter_queue_time=limiter_base+12288;
+    limiter_delay=min(4094,max(1,floor(srate*.002+.5)));
+    memset(limiter_base,0,8192);
+    limiter_time=0;limiter_write=0;limiter_head=0;limiter_count=0;
+    limiter_gain=1;limiter_wet=master_limiter_target;limiter_ceiling=10^(-.1/20);
+    limiter_release=exp(-1/(.08*srate));limiter_toggle_step=1/max(1,.005*srate);
+    limiter_guard_count=0;limiter_block_gr=0;ext_gr_meter=0;
+  );
+  pdc_delay=limiter_delay;pdc_bot_ch=0;pdc_top_ch=2;
+  atomic_set(limiter_meter,limiter_block_gr);ext_gr_meter=-limiter_block_gr;limiter_block_gr=0;
+);
+function limiter_process() local(p,peak,tail,required,left,right,effective,actual,release_coef) (
+  // Delay always runs, including bypass, so toggle automation cannot change PDC.
+  p=limiter_base+limiter_write*2;left=p[0];right=p[1];p[0]=spl0;p[1]=spl1;
+  limiter_write+=1;limiter_write>=limiter_delay ? limiter_write=0;
+  peak=max(abs(spl0),abs(spl1));
+  while(limiter_count>0 && limiter_queue_time[limiter_head]<limiter_time-limiter_delay) (
+    limiter_head=(limiter_head+1)%4096;limiter_count-=1;
+  );
+  while(limiter_count>0 && limiter_queue_value[(limiter_head+limiter_count-1)%4096]<=peak) (limiter_count-=1;);
+  tail=(limiter_head+limiter_count)%4096;limiter_queue_value[tail]=peak;limiter_queue_time[tail]=limiter_time;limiter_count+=1;
+  required=min(1,limiter_ceiling/max(.000000000001,limiter_queue_value[limiter_head]));
+  // A newly observed peak stays in the window until its delayed sample exits.
+  // Linear attack can traverse the entire gain range within the lookahead.
+  required<limiter_gain ? limiter_gain=max(required,limiter_gain-1/limiter_delay) : (
+    release_coef=exp(-1/(srate*(.05+.1*(1-limiter_gain))));
+    limiter_gain=required+(limiter_gain-required)*release_coef;
+  );
+  // Guard float rounding at the output; normal attack scheduling meets this bound.
+  actual=min(1,limiter_ceiling/max(.000000000001,max(abs(left),abs(right))));
+  limiter_gain>actual+.000000001 ? limiter_guard_count+=1;
+  limiter_gain=min(limiter_gain,actual);
+  master_limiter_target ? limiter_wet=min(1,limiter_wet+limiter_toggle_step) : limiter_wet=max(0,limiter_wet-limiter_toggle_step);
+  effective=1+limiter_wet*(limiter_gain-1);
+  spl0=left*effective;spl1=right*effective;
+  limiter_block_gr=max(limiter_block_gr,-20*log10(max(.000000000001,effective)));
+  limiter_time+=1;
+);
+// TEST_LIMITER_INIT_HOOK

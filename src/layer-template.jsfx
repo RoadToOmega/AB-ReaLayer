@@ -1,0 +1,826 @@
+desc:Variation Sampler - Milestone 3 (0.3.0)
+author:Original implementation for Multi Layer Sampler
+version:0.3.0
+tags:instrument sampler
+// Requires REAPER 7.02+ (64-bit). Original feasibility instrument.
+// Three 64 MiB PCM banks; bounded one-shot engine. See README.md.
+options:maxmem=25231360 prealloc=* gfx_idle
+in_pin:none
+out_pin:Left
+out_pin:Right
+slider1:-12<-60,6,0.1>Output (dB)
+slider2:0<-1,1,0.01>Pan / stereo balance
+slider3:0<-24,24,0.01>Pitch (semitones, varispeed)
+slider4:0<0,16,1>MIDI channel (0 = all)
+slider5:-1<-1,127,1>Trigger note (-1 = all)
+slider6:2<0.1,10,0.1>Edge fade (ms)
+
+slider7:-36<-80,-6,0.5>Detection threshold (dBFS)
+slider8:6<1,24,0.5>Detection hysteresis (dB)
+slider9:80<1,1000,1>Minimum quiet gap (ms)
+slider10:10<1,1000,1>Minimum sound length (ms)
+slider11:3<0,100,0.5>Pre-roll (ms)
+slider12:20<0,500,1>Tail padding (ms)
+slider13:0<0,1,1{Variations,Whole WAV}>Playback
+slider14:1<1,256,1>Audition / fixed region
+slider15:0<0,4,1{Random no repeat,Shuffle bag,Round robin,Random,Fixed}>MIDI selection mode
+slider16:12345<1,16777215,1>Sequence seed
+slider17:0<0,1,1{Transport start and manual,Manual only}>Sequence reset policy
+slider18:0<0,12,0.01>Random pitch (+/- semitones)
+slider19:0<0,12,0.1>Random gain (+/- dB)
+slider20:0<0,1,0.01>Random pan (+/-)
+slider21:-1<-1,119,1>Sequence reset MIDI CC (-1 = off)
+
+@init
+// Memory ownership: PCM/metadata immutable from READY until FREE.
+// State: FREE=0, WRITING=1, READY=2, ACTIVE=3, RETIRED=4.
+// Only audio retires ACTIVE banks. Readers pin by generation-tagged token.
+// Loader functions use instance fields, not shared scratch locals, so GUI
+// and serialization loaders can run in different contexts safely.
+function setup() (
+  !booted ? (
+    booted=1;
+    bank_meta=1024; bank_stride=1024; bank_paths=8192;
+    region_base=12288; region_stride=1024; region_limit=256;
+    saved_regions=4096; saved_settings=4700;
+    shuffle_base=7000;
+    voice_base=16384; voice_stride=24; voice_limit=16;
+    event_base=32768; event_limit=2048;
+    pcm_base=65536; bank_capacity=8388608;
+    memory_ok=__memtop()>=pcm_base+3*bank_capacity;
+    bank_paths[0]=#bank_path_0; bank_paths[1]=#bank_path_1;
+    bank_paths[2]=#bank_path_2;
+    active_token=0; latest_request=0; restore_request=0;
+    audio_restore_seen=0; preview_request=0; panic_request=0; reset_request=0;
+    gui_loader.handle=-1; restore_loader.handle=-1;
+    #ui_message="Drop a mono or stereo WAV to begin.";
+    #saved_path="";
+  );
+);
+
+// Token generation never reused within an instance: generation * 4 + bank + 1.
+function token_bank(token) ( (token-1)%4; );
+
+// Read-side pin. Confirming the token AFTER pinning prevents reading a
+// retired/reused slot. Bounded retry: UI keeps its prior display on failure.
+function pin_active() instance(t,b,m,tries,result) (
+  tries=0; result=0;
+  loop(8,
+    !result ? (
+      t=atomic_get(active_token);
+      t>0 ? (
+        b=token_bank(t); m=bank_meta+b*bank_stride;
+        atomic_add(m[5],1);
+        atomic_get(active_token)==t ? result=t : atomic_add(m[5],-1);
+      ) : result=-1;
+    );
+  );
+  result;
+);
+function unpin(token) instance(m) (
+  token>0 ? (m=bank_meta+token_bank(token)*bank_stride; atomic_add(m[5],-1););
+);
+
+// Loader status: 0 idle, 1 decoding, 2 published, 3 analysing, 4 held preview.
+// mode: 0 auto-detect/publish, 1 reanalysis preview, 2 restore PCM only.
+// Errors: -1 open, -2 format, -3 size, -4 buffers busy, -5 read/data,
+// -6 cancelled/superseded, -7 changed source during restore.
+function cancel_load() instance(handle,bank,meta,status) (
+  (status==1 || status==3 || status==4) ? (
+    handle>=0 ? file_close(handle);
+    handle=-1; atomic_set(meta[0],0); status=-6;
+  );
+);
+function begin_load(path,request_id,expect_frames,expect_ch,expect_rate)
+instance(handle,bank,meta,status,request,channels,rate,items,read_items,
+         base,n,i,j,chunk,got,x,frame,bin,peakoff,expected_frames,
+         expected_ch,expected_rate) (
+  this.cancel_load();
+  request=request_id; expected_frames=expect_frames;
+  expected_ch=expect_ch; expected_rate=expect_rate;
+  status=0; bank=-1; i=0;
+  loop(memory_ok ? 3 : 0,
+    bank<0 ? (
+      meta=bank_meta+i*bank_stride;
+      atomic_setifequal(meta[0],0,1)==0 ? bank=i;
+    );
+    i+=1;
+  );
+  bank<0 ? status=memory_ok ? -4 : -9 : (
+    meta=bank_meta+bank*bank_stride; base=pcm_base+bank*bank_capacity;
+    handle=matchi("*.wav",path) ? file_open(path) : -1;
+    handle<0 ? status=-1 : (
+      channels=0; rate=0; file_riff(handle,channels,rate);
+      items=file_avail(handle);
+      (channels!=1 && channels!=2) || rate<1000 || rate>768000 ? status=-2 :
+      (items<channels*2 || items>bank_capacity || items%channels!=0) ? status=-3 : (
+        expected_frames>0 && (items/channels!=expected_frames || channels!=expected_ch || rate!=expected_rate) ? status=-7 : (
+          read_items=0; status=1;
+          strcpy(bank_paths[bank],path);
+          meta[1]=items/channels; meta[2]=channels; meta[3]=rate;
+          meta[4]=request; meta[6]=items; meta[7]=0; meta[8]=0;
+          meta[10]=max(-80,min(-6,slider7)); meta[11]=max(1,min(24,slider8));
+          meta[12]=max(1,min(1000,slider9)); meta[13]=max(1,min(1000,slider10));
+          meta[14]=max(0,min(100,slider11)); meta[15]=max(0,min(500,slider12));
+          // Reader count is NOT reset: a failed stale pin can still be leaving.
+          memset(meta+32,0,512);
+        );
+      );
+    );
+    status!=1 ? (
+      handle>=0 ? file_close(handle);
+      handle=-1; atomic_set(meta[0],0);
+    );
+  );
+  status;
+);
+
+// All detector state is namespaced per loader. No detector code runs in audio.
+function publish_bank() instance(meta,status,request) (
+  request==atomic_get(latest_request) ? (
+    atomic_set(meta[0],2); status=2;
+  ) : (atomic_set(meta[0],0); status=-6;);
+);
+function finish_detection() instance(meta,status,mode) (
+  // Never expose a silently truncated set. Overflow keeps PCM for Whole WAV.
+  meta[8] ? meta[7]=0;
+  mode==1 ? status=4 : this.publish_bank();
+);
+function detector_begin()
+instance(meta,bank,rate,base,channels,scan,window_size,window_count,energy,
+         open_power,close_power,gap_frames,min_frames,pre_frames,tail_frames,
+         is_open,raw_start,last_loud,quiet_start,regions,previous_raw_end) (
+  scan=0; window_size=max(1,floor(rate*.001)); window_count=0; energy=0;
+  open_power=10^(meta[10]/10); close_power=10^((meta[10]-meta[11])/10);
+  gap_frames=max(1,ceil(rate*meta[12]*.001));
+  min_frames=max(1,ceil(rate*meta[13]*.001));
+  pre_frames=floor(rate*meta[14]*.001); tail_frames=floor(rate*meta[15]*.001);
+  is_open=0; raw_start=0; last_loud=0; quiet_start=-1; previous_raw_end=0;
+  regions=region_base+bank*region_stride; meta[7]=0; meta[8]=0;
+);
+function detector_append(raw_end)
+instance(meta,raw_start,min_frames,pre_frames,tail_frames,regions,
+         start_frame,end_frame,previous_raw_end,cut,idx) (
+  raw_end-raw_start>=min_frames && !meta[8] ? (
+    meta[7]>=region_limit ? meta[8]=1 : (
+      start_frame=max(0,raw_start-pre_frames);
+      end_frame=min(meta[1],raw_end+tail_frames);
+      // Resolve overlapping PADDING inside the actual quiet gap, preserving
+      // both raw sounds. All ends are exclusive source-frame indices.
+      idx=meta[7];
+      idx>0 && start_frame<regions[(idx-1)*2+1] ? (
+        cut=max(previous_raw_end,min(raw_start,floor((start_frame+regions[(idx-1)*2+1])/2)));
+        regions[(idx-1)*2+1]=cut; start_frame=cut;
+      );
+      regions[idx*2]=start_frame; regions[idx*2+1]=end_frame;
+      meta[7]+=1; previous_raw_end=raw_end;
+    );
+  );
+);
+function detector_window()
+instance(meta,scan,window_count,energy,open_power,close_power,gap_frames,
+         is_open,raw_start,last_loud,quiet_start,power,window_start) (
+  power=energy/max(1,window_count); window_start=scan-window_count;
+  !is_open ? (
+    power>=open_power ? (
+      is_open=1; raw_start=window_start; last_loud=scan; quiet_start=-1;
+    );
+  ) : (
+    power>=close_power ? (last_loud=scan; quiet_start=-1;) : (
+      quiet_start<0 ? quiet_start=window_start;
+      scan-quiet_start>=gap_frames ? (
+        this.detector_append(last_loud); is_open=0; quiet_start=-1;
+      );
+    );
+  );
+  window_count=0; energy=0;
+);
+function detector_step()
+instance(meta,status,request,base,channels,scan,window_size,window_count,
+         energy,is_open,last_loud,remaining,x0,x1,pointer) (
+  status==3 ? (
+    request!=atomic_get(latest_request) ? this.cancel_load() : (
+      remaining=min(16384,meta[1]-scan);
+      loop(remaining,
+        pointer=base+scan*channels; x0=pointer[0];
+        x1=channels==2 ? pointer[1] : x0;
+        energy+=max(x0*x0,x1*x1); window_count+=1; scan+=1;
+        window_count>=window_size ? this.detector_window();
+      );
+      scan==meta[1] ? (
+        window_count>0 ? this.detector_window();
+        is_open ? (this.detector_append(last_loud); is_open=0;);
+        this.finish_detection();
+      );
+    );
+  );
+  status;
+);
+
+function load_step()
+instance(handle,bank,meta,status,request,channels,rate,items,read_items,
+         base,n,i,j,chunk,got,x,frame,bin,peakoff,expected_frames,
+         expected_ch,expected_rate,mode) (
+  status==1 ? (
+    request!=atomic_get(latest_request) ? this.cancel_load() : (
+      chunk=min(16384,items-read_items);
+      got=file_mem(handle,base+read_items,chunk);
+      got!=chunk ? status=-5 : (
+        i=0;
+        loop(got,
+          x=base[read_items+i];
+          // Comparison also rejects NaN, infinity and implausible PCM values.
+          !(abs(x)<1000000) ? status=-5;
+          frame=floor((read_items+i)/channels);
+          bin=min(255,floor(frame*256/meta[1])); peakoff=meta+32+bin*2;
+          peakoff[0]=min(peakoff[0],x); peakoff[1]=max(peakoff[1],x);
+          i+=1;
+        );
+        read_items+=got;
+      );
+      status<0 ? (
+        file_close(handle); handle=-1; atomic_set(meta[0],0);
+      ) : read_items==items ? (
+        file_close(handle); handle=-1;
+        request==atomic_get(latest_request) ? (
+          mode==2 ? status=4 : (this.detector_begin(); status=3;);
+        ) : (atomic_set(meta[0],0); status=-6;);
+      );
+    );
+  );
+  status==3 ? this.detector_step();
+  status;
+);
+
+// Audio-only deterministic generator. Schrage reduction keeps every integer
+// product in range without relying on EEL's integer-converting remainder.
+// Separate instances isolate region selection from parameter randomisation.
+function next_random() instance(state,quotient) (
+  quotient=floor(state/44488);
+  state=48271*(state-quotient*44488)-3399*quotient;
+  state<=0 ? state+=2147483647;
+  (state-1)/2147483646;
+);
+function reset_sequence() (
+  region_rng.state=seq_seed;
+  variation_rng.state=1+((seq_seed+104729)%2147483646);
+  seq_last=-1; seq_triggers=0; seq_bag_pos=0; seq_bag_size=0;
+  seq_resets+=1;
+);
+function select_region(count) local(index,i,j,temp) (
+  seq_mode==4 ? index=max(0,min(count-1,floor(slider14)-1)) :
+  count==1 ? index=0 :
+  seq_mode==0 ? (
+    seq_last>=0 && seq_last<count ? (
+      index=floor(region_rng.next_random()*(count-1));
+      index>=seq_last ? index+=1;
+    ) : index=floor(region_rng.next_random()*count);
+  ) : seq_mode==1 ? (
+    seq_bag_size!=count || seq_bag_pos>=count ? (
+      i=0; loop(count,shuffle_base[i]=i; i+=1;);
+      i=count-1;
+      loop(count-1,
+        j=floor(region_rng.next_random()*(i+1));
+        temp=shuffle_base[i]; shuffle_base[i]=shuffle_base[j]; shuffle_base[j]=temp;
+        i-=1;
+      );
+      // Preserve no-repeat across cycle boundaries, not only inside each bag.
+      shuffle_base[0]==seq_last ? (
+        j=1+floor(region_rng.next_random()*(count-1));
+        temp=shuffle_base[0]; shuffle_base[0]=shuffle_base[j]; shuffle_base[j]=temp;
+      );
+      seq_bag_size=count; seq_bag_pos=0;
+    );
+    index=shuffle_base[seq_bag_pos]; seq_bag_pos+=1;
+  ) : seq_mode==2 ? index=(seq_last+1)%count :
+    index=floor(region_rng.next_random()*count);
+  seq_last=index;
+  index;
+);
+
+// audition: 0 performance, 1 manual region, 2 manual whole WAV.
+function start_voice(velocity,audition) local(v,i,chosen,m,b,rs,re,rp,ri,dp,dg,db,use_region) (
+  active_token>0 ? (
+    b=token_bank(active_token); m=bank_meta+b*bank_stride;
+    use_region=audition ? audition==1 : slider13<.5;
+    (!use_region || m[7]>0) ? (
+    chosen=-1; i=0;
+    loop(voice_limit,
+      v=voice_base+i*voice_stride;
+      chosen<0 && !v[0] ? chosen=v;
+      i+=1;
+    );
+    chosen<0 ? dropped_voices+=1 : (
+      // Admission happens BEFORE any selection or PRNG work. Rejected notes,
+      // empty banks and manual auditions do not consume the MIDI sequence.
+      rs=0; re=m[1]; ri=-1;
+      use_region ? (
+        ri=audition ? max(0,min(m[7]-1,floor(slider14)-1)) : select_region(m[7]);
+        rp=region_base+b*region_stride; rs=rp[ri*2]; re=rp[ri*2+1];
+      );
+      dp=0; dg=0; db=0;
+      !audition ? (
+        // Always draw three values, even with zero amounts, so changing an
+        // amount does not perturb the other modulation dimensions.
+        dp=(variation_rng.next_random()*2-1)*random_pitch;
+        dg=(variation_rng.next_random()*2-1)*random_gain;
+        db=(variation_rng.next_random()*2-1)*random_pan;
+        seq_triggers+=1;
+      );
+      v=chosen; b=token_bank(active_token); m=bank_meta+b*bank_stride;
+      v[0]=1; v[1]=b; v[2]=rs; v[3]=re; v[4]=m[2];
+      v[5]=m[3]; v[6]=velocity/127; v[7]=0; v[8]=1;
+      v[9]=max(1,srate*max(0.1,min(10,slider6))*0.001);
+      v[10]=pcm_base+b*bank_capacity; v[11]=0; v[12]=rs;
+      v[13]=2^(dp/12); v[14]=db; v[15]=seq_triggers;
+      v[16]=0; v[17]=1; v[18]=1; v[19]=0; v[20]=ri;
+      v[6]*=10^(dg/20);
+      trigger_count+=1;
+    );
+    );
+  );
+);
+function release_all() local(v,i) (
+  i=0; loop(voice_limit,
+    v=voice_base+i*voice_stride; v[0] ? v[7]=1; i+=1;
+  );
+);
+
+setup();
+ext_noinit=1;
+ext_tail_size=-1;
+// Do not clear memory on transport starts or after @serialize.
+// TEST_INIT_HOOK (the test runner injects fixtures here in a temporary copy).
+
+@serialize
+setup();
+file_avail(0)<0 ? (
+  // Serialize a pinned immutable bank, then release it before host file I/O.
+  // A preset can be saved again before audio has processed its restore request.
+  // In that interval preserve the just-restored descriptor, not an old voice bank.
+  ss_restore_pending=atomic_get(restore_request)!=atomic_get(audio_restore_seen);
+  ss_token=ss_restore_pending ? -2 : ss.pin_active();
+  ss_token>0 ? (
+    ss_meta=bank_meta+token_bank(ss_token)*bank_stride;
+    strcpy(#saved_path,bank_paths[token_bank(ss_token)]);
+    saved_frames=ss_meta[1]; saved_channels=ss_meta[2]; saved_rate=ss_meta[3];
+    saved_count=ss_meta[7]; saved_overflow=ss_meta[8];
+    memcpy(saved_regions,region_base+token_bank(ss_token)*region_stride,saved_count*2);
+    memcpy(saved_settings,ss_meta+10,6);
+    ss.unpin(ss_token);
+  ) : ss_token==-1 && !restore_failed ? (
+    #saved_path=""; saved_frames=0; saved_channels=0; saved_rate=0;
+    saved_count=0; saved_overflow=0;
+  );
+  // If eight publication races prevent a snapshot, keep the previous complete
+  // snapshot rather than emitting mixed data. Diagnostic is sticky.
+  ss_token==0 ? atomic_set(snapshot_retry_exhausted,1);
+  // Sliders persist mode/seed/amounts. Live PRNG/bag/voices deliberately do not:
+  // fresh state restore starts a new sequence from the saved seed.
+  ss_magic=73101; ss_version=3;
+  file_var(0,ss_magic); file_var(0,ss_version);
+  file_string(0,#saved_path);
+  file_var(0,saved_frames); file_var(0,saved_channels); file_var(0,saved_rate);
+  file_var(0,saved_count); file_var(0,saved_overflow);
+  file_mem(0,saved_settings,6); file_mem(0,saved_regions,saved_count*2);
+) : (
+  ss_magic=0; ss_version=0;
+  file_var(0,ss_magic); file_var(0,ss_version);
+  ss_request=atomic_add(latest_request,1);
+  atomic_set(restore_request,ss_request);
+  restore_failed=0;
+  ss_magic==73101 && (ss_version==1 || ss_version==2 || ss_version==3) ? (
+    file_string(0,#saved_path);
+    file_var(0,saved_frames); file_var(0,saved_channels); file_var(0,saved_rate);
+    ss_valid=1;
+    ss_version>=2 ? (
+      file_var(0,saved_count); file_var(0,saved_overflow);
+      !(saved_count>=0 && saved_count<=region_limit && saved_count==floor(saved_count)) ? ss_valid=0;
+      ss_valid ? (
+        file_mem(0,saved_settings,6)!=6 ? ss_valid=0;
+        saved_count>0 && file_mem(0,saved_regions,saved_count*2)!=saved_count*2 ? ss_valid=0;
+        ss_i=0; ss_end=0;
+        loop(saved_count,
+          ss_start=saved_regions[ss_i*2]; ss_stop=saved_regions[ss_i*2+1];
+          !(ss_start>=ss_end && ss_stop>ss_start && ss_stop<=saved_frames &&
+            ss_start==floor(ss_start) && ss_stop==floor(ss_stop)) ? ss_valid=0;
+          ss_end=ss_stop; ss_i+=1;
+        );
+      );
+    ) : (
+      // M1 state preserves its original whole-file behaviour when migrated.
+      saved_count=saved_frames>0 ? 1 : 0; saved_overflow=0;
+      saved_regions[0]=0; saved_regions[1]=saved_frames; slider13=1;
+      saved_settings[0]=-36; saved_settings[1]=6; saved_settings[2]=80;
+      saved_settings[3]=10; saved_settings[4]=3; saved_settings[5]=20;
+    );
+    ss_version<3 ? (
+      // Migrated M1/M2 state must not unexpectedly begin randomising.
+      slider15=4; slider16=12345; slider17=0;
+      slider18=0; slider19=0; slider20=0; slider21=-1;
+    );
+    ss_valid && strlen(#saved_path)>0 ? (
+      restore_loader.mode=2;
+      // TEST_DETECTION_HOOK (test-only driver can request fresh analysis).
+      restore_loader.begin_load(#saved_path,ss_request,saved_frames,saved_channels,saved_rate);
+      // Decode and analysis have separate bounded passes. Restore does not rely
+      // on GUI callbacks. Ordinary v2 recall uses the saved table, not detection.
+      ss_chunks=2*ceil(bank_capacity/16384)+2;
+      loop(ss_chunks, (restore_loader.status==1 || restore_loader.status==3) ? restore_loader.load_step(););
+      restore_loader.status==4 ? (
+        ss_m=restore_loader.meta;
+        ss_m[7]=saved_count; ss_m[8]=saved_overflow;
+        memcpy(region_base+restore_loader.bank*region_stride,saved_regions,saved_count*2);
+        memcpy(ss_m+10,saved_settings,6);
+        restore_loader.publish_bank();
+      );
+      restore_loader.status!=2 ? restore_failed=1;
+    ) : !ss_valid ? (
+      restore_failed=1; restore_loader.status=-8;
+      saved_count=0; saved_overflow=0;
+    );
+  ) : (
+    #saved_path=""; saved_frames=0; saved_channels=0; saved_rate=0;
+    saved_count=0; saved_overflow=0;
+    restore_failed=1; restore_loader.status=-8;
+  );
+);
+
+@slider
+// Host sliders are read and clamped at audio block boundaries.
+
+@block
+// TEST_BLOCK_HOOK (temporary test copies only; no production I/O here).
+audio_request=atomic_get(latest_request);
+audio_restore=atomic_get(restore_request);
+audio_restore!=audio_restore_seen ? (
+  // Restoration invalidates current playback only on the audio context.
+  memset(voice_base,0,voice_limit*voice_stride);
+  active_token>0 ? (
+    a_meta=bank_meta+token_bank(active_token)*bank_stride;
+    atomic_set(a_meta[0],4);
+  );
+  atomic_set(active_token,0); atomic_set(audio_restore_seen,audio_restore);
+);
+
+// New-bank adoption and all retirement decisions are audio-owned.
+a_bank=0;
+loop(3,
+  a_meta=bank_meta+a_bank*bank_stride;
+  atomic_get(a_meta[0])==2 ? (
+    a_meta[4]==audio_request ? (
+      active_token>0 ? (
+        a_old=bank_meta+token_bank(active_token)*bank_stride;
+        atomic_set(a_old[0],4);
+      );
+      atomic_set(a_meta[0],3);
+      atomic_set(active_token,a_meta[4]*4+a_bank+1);
+    ) : atomic_set(a_meta[0],0);
+  );
+  a_bank+=1;
+);
+// A bank can be reused only when no voice and no external reader holds it.
+a_bank=0;
+loop(3,
+  a_meta=bank_meta+a_bank*bank_stride;
+  atomic_get(a_meta[0])==4 ? (
+    a_used=0; a_i=0;
+    loop(voice_limit,
+      a_voice=voice_base+a_i*voice_stride;
+      a_voice[0] && a_voice[1]==a_bank ? a_used=1;
+      a_i+=1;
+    );
+    !a_used && atomic_get(a_meta[5])==0 ? atomic_set(a_meta[0],0);
+  );
+  a_bank+=1;
+);
+
+target_gain=10^(max(-60,min(6,slider1))/20);
+target_pan=max(-1,min(1,slider2));
+target_pitch=2^(max(-24,min(24,slider3))/12);
+smooth=1-exp(-1/(0.005*srate));
+!audio_started ? (
+  smooth_gain=target_gain; smooth_pan=target_pan; smooth_pitch=target_pitch;
+  audio_started=1;
+);
+// Refresh rate-dependent fade lengths when host rate changes without @init.
+last_audio_rate!=srate ? (
+  a_i=0; loop(voice_limit,
+    a_voice=voice_base+a_i*voice_stride;
+    last_audio_rate>0 ? a_voice[9]*=srate/last_audio_rate;
+    a_i+=1;
+  ); last_audio_rate=srate;
+);
+// Reset at stable audio boundaries. Reset never cuts a sounding voice.
+new_seed=max(1,min(16777215,floor(slider16)));
+new_mode=max(0,min(4,floor(slider15))); new_playback=slider13>=.5;
+now_playing=play_state==1 || play_state==5;
+must_reset=!seq_initialized || seq_bank!=active_token || seq_seed!=new_seed ||
+           seq_mode!=new_mode || seq_playback!=new_playback ||
+           (slider17<.5 && now_playing && !was_playing);
+seq_seed=new_seed; seq_mode=new_mode; seq_playback=new_playback; seq_bank=active_token;
+manual_reset=atomic_setifequal(reset_request,1,0)==1;
+must_reset || manual_reset ? reset_sequence();
+seq_initialized=1; was_playing=now_playing;
+random_pitch=max(0,min(12,slider18)); random_gain=max(0,min(12,slider19));
+random_pan=max(0,min(1,slider20));
+atomic_setifequal(panic_request,1,0)==1 ? release_all();
+preview_command=atomic_get(preview_request);
+preview_command>0 && atomic_setifequal(preview_request,preview_command,0)==preview_command ? start_voice(100,preview_command);
+
+// Queue kind: 0 note-on, 1 panic, 2 explicit sequence reset. Other MIDI passes through.
+// Always drain the host MIDI queue, even after our fixed queue is full.
+event_count=0; event_index=0; sample_index=0;
+while(midirecv(midi_offset,midi_status,midi_data1,midi_data2)) (
+  midi_type=midi_status&240; midi_channel=(midi_status&15)+1;
+  midi_matches=(slider4==0 || midi_channel==floor(slider4));
+  midi_trigger=midi_type==144 && midi_data2>0 && midi_matches &&
+               (slider5<0 || midi_data1==floor(slider5));
+  midi_panic=midi_type==176 && midi_matches && (midi_data1==120 || midi_data1==123);
+  midi_reset=midi_type==176 && midi_matches && slider21>=0 &&
+             midi_data1==floor(slider21) && midi_data2>=64;
+  midi_trigger || midi_panic || midi_reset ? (
+    event_count<event_limit ? (
+      e=event_base+event_count*3;
+      e[0]=max(0,min(samplesblock-1,midi_offset));
+      e[1]=midi_reset ? 2 : midi_panic; e[2]=midi_data2; event_count+=1;
+    ) : (
+      event_overflows+=1;
+      // Even an overflowing all-notes-off must release existing voices.
+      midi_panic ? release_all();
+    );
+  ) : (
+    // Consume matching note-offs: this milestone is deliberately one-shot.
+    !((midi_type==128 || (midi_type==144 && midi_data2==0)) && midi_matches &&
+       (slider5<0 || midi_data1==floor(slider5))) ?
+       midisend(midi_offset,midi_status,midi_data1,midi_data2);
+  );
+);
+block_peak=0; block_voices=0;
+
+@sample
+while(event_index<event_count && event_base[event_index*3]<=sample_index) (
+  e=event_base+event_index*3;
+  e[1]==2 ? reset_sequence() : e[1]==1 ? release_all() : start_voice(e[2],0);
+  event_index+=1;
+);
+smooth_gain+=(target_gain-smooth_gain)*smooth;
+smooth_pan+=(target_pan-smooth_pan)*smooth;
+smooth_pitch+=(target_pitch-smooth_pitch)*smooth;
+// Panning coefficients belong to the layer, not to each voice.
+!pan_ready || abs(smooth_pan-cached_pan)>0.0000001 ? (
+  mono_l=cos((smooth_pan+1)*$pi/4); mono_r=sin((smooth_pan+1)*$pi/4);
+  stereo_l=smooth_pan>0 ? cos(smooth_pan*$pi/2) : 1;
+  stereo_r=smooth_pan<0 ? cos(-smooth_pan*$pi/2) : 1;
+  cached_pan=smooth_pan; pan_ready=1;
+);
+out_l=0; out_r=0; live_count=0; v_i=0;
+loop(voice_limit,
+  v=voice_base+v_i*voice_stride;
+  v[0] ? (
+    rate_step=v[5]/srate*smooth_pitch*v[13];
+    pos_i=floor(v[2]); frac=v[2]-pos_i;
+    // Clamp both interpolation reads to the current region, never next bank.
+    pos_j=min(pos_i+1,v[3]-1);
+    p0=v[10]+pos_i*v[4]; p1=v[10]+pos_j*v[4];
+    left=p0[0]+(p1[0]-p0[0])*frac;
+    v[4]==2 ? right=p0[1]+(p1[1]-p0[1])*frac : right=left;
+    v[7] ? v[8]=max(0,v[8]-1/max(1,srate*0.005));
+    attack=min(1,v[11]/max(1,v[9]));
+    tail=min(1,max(0,(v[3]-1-v[2])/max(0.000001,rate_step*v[9])));
+    amp=v[6]*attack*tail*v[8]*smooth_gain;
+    abs(v[14])<.00000001 ? (
+      v[4]==1 ? (pan_l=mono_l; pan_r=mono_r;) : (pan_l=stereo_l; pan_r=stereo_r;);
+    ) : (
+      voice_pan=max(-1,min(1,smooth_pan+v[14]));
+      !v[19] || abs(voice_pan-v[16])>.0000001 ? (
+        v[4]==1 ? (
+          v[17]=cos((voice_pan+1)*$pi/4); v[18]=sin((voice_pan+1)*$pi/4);
+        ) : (
+          v[17]=voice_pan>0 ? cos(voice_pan*$pi/2) : 1;
+          v[18]=voice_pan<0 ? cos(-voice_pan*$pi/2) : 1;
+        );
+        v[16]=voice_pan; v[19]=1;
+      );
+      pan_l=v[17]; pan_r=v[18];
+    );
+    out_l+=left*amp*pan_l; out_r+=right*amp*pan_r;
+    v[2]+=rate_step; v[11]+=1;
+    v[2]>=v[3] || v[8]<=0 ? (v[0]=0; v[11]=0;) : live_count+=1;
+  );
+  v_i+=1;
+);
+spl0=out_l; spl1=out_r;
+block_peak=max(block_peak,max(abs(out_l),abs(out_r)));
+block_voices=max(block_voices,live_count);
+sample_index+=1;
+sample_index>=samplesblock ? (
+  atomic_set(meter_peak,block_peak); atomic_set(meter_voices,block_voices);
+  atomic_set(meter_triggers,trigger_count);
+  atomic_set(meter_dropped,dropped_voices); atomic_set(meter_overflows,event_overflows);
+  atomic_set(meter_variation,seq_last+1); atomic_set(meter_sequence,seq_triggers);
+  atomic_set(meter_resets,seq_resets);
+);
+
+
+@gfx 840 640
+// GUI owns display buffers 9000 (peaks), 10000 (regions), 10700 (settings).
+function ui_button(x,y,w,label,enabled) local(hit) (
+  gfx_set(enabled ? .16 : .095,enabled ? .27 : .12,enabled ? .3 : .14,1);
+  gfx_rect(x,y,w,32);
+  gfx_set(enabled ? .92 : .4,enabled ? .95 : .45,enabled ? .96 : .49,1);
+  gfx_x=x+8; gfx_y=y+8; gfx_drawstr(label,0,x+w-5,y+30);
+  hit=enabled && g_click && mouse_x>=x && mouse_x<x+w && mouse_y>=y && mouse_y<y+32;
+  hit;
+);
+function choose_region(index,audition) (
+  slider14=max(1,index+1); slider_automate(slider14,1);
+  audition ? atomic_set(preview_request,1);
+);
+
+g_visible=!(gfx_ext_flags&2);
+gfx_getchar();
+g_click=(mouse_cap&1) && !(g_mouse_previous&1);
+gfx_getdropfile(0,#drop_path) ? (
+  gfx_getdropfile(1,#extra_path) ? #ui_message="Drop one WAV at a time." : (
+    g_request=atomic_add(latest_request,1);
+    gui_loader.mode=0;
+    gui_loader.begin_load(#drop_path,g_request,0,0,0);
+    #ui_message="";
+  );
+  gfx_getdropfile(-1);
+);
+(gui_loader.status==1 || gui_loader.status==3) ? gui_loader.load_step();
+gui_loader.status==4 && gui_loader.request!=atomic_get(latest_request) ? gui_loader.cancel_load();
+
+// Snapshot the active immutable table. Voices hold copies of start/end bounds.
+g_token=gui_reader.pin_active();
+g_token>0 ? (
+  g_meta=bank_meta+token_bank(g_token)*bank_stride;
+  strcpy(#display_path,bank_paths[token_bank(g_token)]);
+  g_frames=g_meta[1]; g_channels=g_meta[2]; g_rate=g_meta[3];
+  g_count=g_meta[7]; g_overflow=g_meta[8];
+  memcpy(9000,g_meta+32,512);
+  memcpy(10000,region_base+token_bank(g_token)*region_stride,g_count*2);
+  memcpy(10700,g_meta+10,6);
+  gui_reader.unpin(g_token);
+  g_last_token!=g_token ? (
+    g_last_token=g_token; #ui_message=""; sliderchange(-1);
+  );
+) : g_token==-1 ? (
+  #display_path="No WAV loaded"; g_frames=0; g_count=0; g_overflow=0;
+);
+// A reanalysis preview remains WRITING and belongs exclusively to this GUI.
+// It is never an audio source until Apply publishes it. MIDI uses active data.
+g_preview=gui_loader.status==4 && gui_loader.mode==1;
+g_active_count=g_count;
+g_preview ? (
+  g_meta=gui_loader.meta; g_count=g_meta[7]; g_overflow=g_meta[8];
+  memcpy(9000,g_meta+32,512);
+  memcpy(10000,region_base+gui_loader.bank*region_stride,g_count*2);
+  memcpy(10700,g_meta+10,6);
+);
+g_selected=max(0,min(g_count-1,floor(slider14)-1));
+g_dirty=abs(slider7-10700[0])>.001 || abs(slider8-10700[1])>.001 ||
+        abs(slider9-10700[2])>.001 || abs(slider10-10700[3])>.001 ||
+        abs(slider11-10700[4])>.001 || abs(slider12-10700[5])>.001;
+
+g_visible ? (
+  gfx_set(.055,.07,.09,1); gfx_rect(0,0,gfx_w,gfx_h);
+  gfx_setfont(1,"Arial",24); gfx_set(.92,.94,.96,1);
+  gfx_x=24; gfx_y=18; gfx_drawstr("VARIATION SAMPLER");
+  gfx_setfont(2,"Arial",13); gfx_set(.48,.76,.73,1);
+  gfx_x=25; gfx_y=50; gfx_drawstr("MILESTONE 3  /  VARIATION ENGINE  /  0.3.0");
+  gfx_set(.095,.13,.16,1); gfx_rect(24,80,max(100,gfx_w-48),204);
+  gfx_setfont(1,"Arial",18); gfx_set(.87,.92,.95,1);
+  gfx_x=40; gfx_y=93;
+  g_preview ? gfx_printf("PREVIEW: %d regions  |  Apply or Discard",g_count) :
+    gfx_printf("LAYER 1  |  %d detected regions",g_count);
+  gfx_setfont(2,"Arial",13); gfx_set(.6,.7,.76,1);
+  gfx_x=40; gfx_y=121; gfx_drawstr(#display_path,0,gfx_w-40,145);
+  g_w=max(100,gfx_w-80);
+  g_frames>0 ? (
+    // Region spans behind the waveform; labels only when space permits.
+    g_i=0; loop(g_count,
+      g_x1=40+10000[g_i*2]/g_frames*g_w;
+      g_x2=40+10000[g_i*2+1]/g_frames*g_w;
+      g_i==g_selected ? gfx_set(.18,.42,.39,.65) : gfx_set(.13,.27,.3,.5);
+      g_preview ? gfx_set(.4,.31,.13,.6);
+      gfx_rect(g_x1,152,max(1,g_x2-g_x1),86);
+      gfx_set(.45,.7,.7,1); gfx_line(g_x1,152,g_x1,238);
+      g_x2-g_x1>22 ? (gfx_x=g_x1+3; gfx_y=154; gfx_printf("%d",g_i+1););
+      g_click && !g_preview && mouse_y>=152 && mouse_y<238 && mouse_x>=g_x1 && mouse_x<g_x2 ? (
+        choose_region(g_i,0);
+      );
+      g_i+=1;
+    );
+    gfx_set(.4,.83,.75,1); g_i=0;
+    loop(256,
+      g_x=40+g_i*g_w/256;
+      gfx_line(g_x,206-max(-1,min(1,9000[g_i*2+1]))*30,
+               g_x,206-max(-1,min(1,9000[g_i*2]))*30);
+      g_i+=1;
+    );
+    gfx_x=40; gfx_y=257; gfx_set(.65,.75,.8,1);
+    gfx_printf("%.2f s  |  %d Hz  |  %d ch  |  %.1f MiB",g_frames/g_rate,g_rate,g_channels,g_frames*g_channels*8/1048576);
+  ) : (
+    gfx_x=40; gfx_y=175; gfx_drawstr("Drop a mono or stereo WAV with several separated sounds.");
+    gfx_x=40; gfx_y=204; gfx_drawstr("Detection runs automatically after loading.");
+  );
+
+  ui_button(24,298,118,"Audition",g_token>0 && !g_preview && (slider13>=.5 || g_count>0)) ? atomic_set(preview_request,slider13>=.5 ? 2 : 1);
+  ui_button(150,298,42,"<",!g_preview && g_selected>0) ? choose_region(g_selected-1,0);
+  ui_button(198,298,42,">",!g_preview && g_selected+1<g_count) ? choose_region(g_selected+1,0);
+  ui_button(248,298,118,"Reanalyse",g_token>0) ? (
+    g_request=atomic_add(latest_request,1); gui_loader.mode=1;
+    gui_loader.begin_load(#display_path,g_request,g_frames,g_channels,g_rate);
+    #ui_message="";
+  );
+  ui_button(374,298,78,"Apply",g_preview) ? gui_loader.publish_bank();
+  ui_button(460,298,88,"Discard",g_preview || gui_loader.status==1 || gui_loader.status==3) ? gui_loader.cancel_load();
+  ui_button(556,298,78,"Panic",1) ? atomic_set(panic_request,1);
+  ui_button(642,298,142,slider13>=.5 ? "Whole WAV" : "Variations",!g_preview) ? (
+    slider13=slider13>=.5 ? 0 : 1; slider_automate(slider13,1);
+  );
+
+  gfx_x=24; gfx_y=343; gfx_set(.78,.85,.88,1);
+  g_preview ? gfx_printf("Preview only. MIDI still uses %d applied regions. Apply to audition this result.",g_active_count) :
+  slider13>=.5 ? gfx_drawstr("MIDI: Whole WAV. Region-grid clicks audition individual sounds without changing MIDI mode.") :
+  g_count>0 ? gfx_printf("Audition / fixed region %d / %d   |   %.3f - %.3f s   |   %.3f s duration",g_selected+1,g_count,
+    10000[g_selected*2]/g_rate,10000[g_selected*2+1]/g_rate,(10000[g_selected*2+1]-10000[g_selected*2])/g_rate) :
+    gfx_drawstr("No playable regions. Adjust detection and Reanalyse, or choose Whole WAV.");
+
+  // A paged grid keeps all region numbers accessible, including narrow spans.
+  g_cols=max(4,min(12,floor((gfx_w-48)/64))); g_perpage=g_cols*2;
+  g_selected!=g_previous_selected ? g_page=floor(g_selected/g_perpage);
+  g_previous_selected=g_selected;
+  g_pages=max(1,ceil(g_count/g_perpage)); g_page=max(0,min(g_page,g_pages-1));
+  g_cellw=(gfx_w-48)/g_cols; g_i=0;
+  loop(g_perpage,
+    g_idx=g_page*g_perpage+g_i;
+    g_idx<g_count ? (
+      sprintf(#region_label,"%d",g_idx+1);
+      ui_button(24+(g_i%g_cols)*g_cellw,370+floor(g_i/g_cols)*38,g_cellw-6,#region_label,!g_preview) ? (
+        choose_region(g_idx,1);
+      );
+      g_idx==g_selected ? (
+        gfx_set(.4,.83,.75,1); gfx_rect(24+(g_i%g_cols)*g_cellw,400+floor(g_i/g_cols)*38,g_cellw-6,2);
+      );
+    );
+    g_i+=1;
+  );
+  ui_button(24,449,70,"Page <",g_page>0) ? g_page-=1;
+  ui_button(102,449,70,"Page >",g_page+1<g_pages) ? g_page+=1;
+  gfx_x=185; gfx_y=458; gfx_set(.64,.73,.78,1); gfx_printf("%d / %d",g_page+1,g_pages);
+
+  gfx_x=24; gfx_y=495; gfx_set(.75,.83,.87,1);
+  gui_loader.status==1 ? gfx_printf("Loading %.0f%%",100*gui_loader.read_items/gui_loader.items) :
+  gui_loader.status==3 ? gfx_printf("Analysing %.0f%%",100*gui_loader.scan/gui_loader.meta[1]) : (
+    g_error=gui_loader.status<0 ? gui_loader.status : (restore_failed && g_token<=0 ? restore_loader.status : 0);
+    g_error==-1 ? gfx_drawstr("Cannot open WAV. Drop the file again to relink.") :
+    g_error==-2 ? gfx_drawstr("Unsupported format. Use a mono or stereo WAV.") :
+    g_error==-3 ? gfx_drawstr("File empty, too short, malformed, or exceeds 64 MiB decoded.") :
+    g_error==-4 ? gfx_drawstr("Buffers busy. Let tails finish or press Panic, then retry.") :
+    g_error==-5 ? gfx_drawstr("Read failed or invalid audio. Previous applied bank preserved.") :
+    g_error==-6 ? gfx_drawstr("Preview/load discarded. Applied regions are unchanged.") :
+    g_error==-7 ? gfx_drawstr("Source properties changed. Drop the WAV to accept replacement.") :
+    g_error==-8 ? gfx_drawstr("Invalid/unsupported saved regions. Drop a WAV to recover.") :
+    g_error==-9 ? gfx_drawstr("Insufficient JSFX memory: this build requires about 193 MiB.") :
+    g_overflow ? gfx_drawstr("More than 256 regions. Increase quiet gap/minimum length, or use Whole WAV.") :
+    g_preview ? gfx_drawstr("Preview ready. Apply publishes the proposed boundaries; Discard keeps the current set.") :
+    gui_loader.status==2 && g_token!=gui_loader.request*4+gui_loader.bank+1 ? gfx_drawstr("Prepared - waiting for an audio block to activate this bank.") :
+    g_dirty && g_token>0 ? gfx_drawstr("Detection settings changed. Reanalyse to preview new boundaries.") :
+    strlen(#ui_message)>0 ? gfx_drawstr(#ui_message) : gfx_drawstr("Click a region number to audition. MIDI follows the selection mode below.");
+  );
+  gfx_x=24; gfx_y=522; gfx_set(.6,.7,.76,1);
+  g_peak=atomic_get(meter_peak); g_peak>1 ? gfx_set(1,.4,.35,1);
+  gfx_printf("Voices %d/16  |  Peak %.1f dBFS  |  Rejected %d  |  MIDI overflow %d",atomic_get(meter_voices),20*log10(max(.00000001,g_peak)),atomic_get(meter_dropped),atomic_get(meter_overflows));
+  g_mode=max(0,min(4,floor(slider15)));
+  g_mode==0 ? #mode_label="Random - no repeat" :
+  g_mode==1 ? #mode_label="Shuffle bag" :
+  g_mode==2 ? #mode_label="Round robin" :
+  g_mode==3 ? #mode_label="Random" : #mode_label="Fixed";
+  ui_button(24,550,195,#mode_label,1) ? (
+    #mode_menu=""; g_mi=0;
+    loop(5,
+      g_mi>0 ? strcat(#mode_menu,"|");
+      g_mi==g_mode ? strcat(#mode_menu,"!");
+      g_mi==0 ? strcat(#mode_menu,"Random - no immediate repeat") :
+      g_mi==1 ? strcat(#mode_menu,"Shuffle bag") :
+      g_mi==2 ? strcat(#mode_menu,"Round robin") :
+      g_mi==3 ? strcat(#mode_menu,"Random") : strcat(#mode_menu,"Fixed");
+      g_mi+=1;
+    );
+    gfx_x=24; gfx_y=550; g_choice=gfx_showmenu(#mode_menu);
+    g_choice>0 ? (slider15=g_choice-1; slider_automate(slider15,1););
+  );
+  ui_button(230,550,145,"Reset sequence",1) ? atomic_set(reset_request,1);
+  gfx_set(.74,.82,.86,1); gfx_x=390; gfx_y=560;
+  gfx_printf("Seed %d  |  MIDI triggers %d",slider16,atomic_get(meter_sequence));
+  gfx_x=24; gfx_y=597;
+  g_last_midi=atomic_get(meter_variation);
+  g_last_midi>0 ? gfx_printf("Last MIDI region: %d  |  ",g_last_midi) : gfx_drawstr("Last MIDI region: --  |  ");
+  gfx_printf("Random +/- %.2f st, %.1f dB, %.2f pan",slider18,slider19,slider20);
+  atomic_get(snapshot_retry_exhausted) ? (gfx_x=24; gfx_y=619; gfx_drawstr("State snapshot was busy: save again after loading finishes."););
+);
+g_mouse_previous=mouse_cap;

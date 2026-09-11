@@ -1,0 +1,35 @@
+{
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "baseline_sha256": "7ab8da93ca79a0775cb7c4fb7be85d931c43feb28c10a61d430d90e9603f6dcb",
+  "passed": 2,
+  "results": [
+    {
+      "test": "native_load_1_layers",
+      "status": "PASS",
+      "duration_seconds": 60,
+      "speedup": 17.258638459269626,
+      "baseline": {
+        "seconds": 44.02885437011719,
+        "callbacks": 1056
+      },
+      "updated": {
+        "seconds": 2.551119804382324,
+        "callbacks": 70
+      }
+    },
+    {
+      "test": "native_load_4_layers",
+      "status": "PASS",
+      "duration_seconds": 60,
+      "speedup": 18.75885906070635,
+      "baseline": {
+        "seconds": 177.92637634277344,
+        "callbacks": 4221
+      },
+      "updated": {
+        "seconds": 9.484925270080566,
+        "callbacks": 259
+      }
+    }
+  ]
+}

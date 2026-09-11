@@ -1,0 +1,16 @@
+{
+  "source_sha256": "22832bcdae2d4b7b7a032ec4d01f783dec5c5358128eecc0b13541a22a4681dd",
+  "passed": 2,
+  "results": [
+    {
+      "test": "broken_negative_control",
+      "status": "PASS",
+      "gui_heartbeat": 0.0
+    },
+    {
+      "test": "fixed_startup",
+      "status": "PASS",
+      "gui_heartbeat": 1.0
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 4,
+  "results": [
+    {
+      "test": "channels1_exact_limit",
+      "status": "PASS",
+      "channels": 1,
+      "frames": 12582912,
+      "layers_checked": 4
+    },
+    {
+      "test": "channels1_over_limit",
+      "status": "PASS",
+      "channels": 1,
+      "frames": 12582913,
+      "layers_checked": 4
+    },
+    {
+      "test": "channels2_exact_limit",
+      "status": "PASS",
+      "channels": 2,
+      "frames": 6291456,
+      "layers_checked": 4
+    },
+    {
+      "test": "channels2_over_limit",
+      "status": "PASS",
+      "channels": 2,
+      "frames": 6291457,
+      "layers_checked": 4
+    }
+  ]
+}

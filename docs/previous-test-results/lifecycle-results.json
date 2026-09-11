@@ -1,0 +1,4139 @@
+{
+  "host": "REAPER 7.79 Linux x86_64",
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 28,
+  "results": [
+    {
+      "test": "layer1_detect",
+      "status": "PASS",
+      "max_absolute_error": 5.704426342401092e-08,
+      "action_frame": 0,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_hold",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_discard",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_apply",
+      "status": "PASS",
+      "max_absolute_error": 5.71743156430049e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_busy",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_clear",
+      "status": "PASS",
+      "max_absolute_error": 5.9388552742234424e-08,
+      "action_frame": 7680,
+      "layers": [
+        {
+          "path": "",
+          "frames": 0,
+          "ch": 0,
+          "rate": 0,
+          "count": 0,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": []
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer1_reset_layer",
+      "status": "PASS",
+      "max_absolute_error": 5.771342713803418e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_detect",
+      "status": "PASS",
+      "max_absolute_error": 5.667566319034201e-08,
+      "action_frame": 0,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_hold",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_discard",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_apply",
+      "status": "PASS",
+      "max_absolute_error": 5.626438979913079e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_busy",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_clear",
+      "status": "PASS",
+      "max_absolute_error": 5.960205379414163e-08,
+      "action_frame": 7680,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "",
+          "frames": 0,
+          "ch": 0,
+          "rate": 0,
+          "count": 0,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": []
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer2_reset_layer",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_detect",
+      "status": "PASS",
+      "max_absolute_error": 5.017068648027756e-08,
+      "action_frame": 0,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_hold",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_discard",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_apply",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_busy",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_clear",
+      "status": "PASS",
+      "max_absolute_error": 5.91579338397874e-08,
+      "action_frame": 7680,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "",
+          "frames": 0,
+          "ch": 0,
+          "rate": 0,
+          "count": 0,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": []
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer3_reset_layer",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_detect",
+      "status": "PASS",
+      "max_absolute_error": 5.1756188889327814e-08,
+      "action_frame": 0,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_hold",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_discard",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_apply",
+      "status": "PASS",
+      "max_absolute_error": 5.686254780923328e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_busy",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "test": "layer4_clear",
+      "status": "PASS",
+      "max_absolute_error": 5.952685999677243e-08,
+      "action_frame": 7680,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 1,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              0,
+              96000
+            ]
+          ]
+        },
+        {
+          "path": "",
+          "frames": 0,
+          "ch": 0,
+          "rate": 0,
+          "count": 0,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": []
+        }
+      ]
+    },
+    {
+      "test": "layer4_reset_layer",
+      "status": "PASS",
+      "max_absolute_error": 5.57395282291262e-08,
+      "action_frame": 12288,
+      "layers": [
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer1.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer2.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -35.0,
+            7.0,
+            90.0,
+            11.0,
+            4.0,
+            21.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer3.wav",
+          "frames": 96000,
+          "ch": 1,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -34.0,
+            8.0,
+            100.0,
+            12.0,
+            5.0,
+            22.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        },
+        {
+          "path": "/workspace/scratch/f6ce4fed5943/tools/m11-release/lifecycle/layer4.wav",
+          "frames": 96000,
+          "ch": 2,
+          "rate": 48000,
+          "count": 3,
+          "overflow": 0,
+          "settings": [
+            -36.0,
+            6.0,
+            80.0,
+            10.0,
+            3.0,
+            20.0
+          ],
+          "flags": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "controls": [
+            -33.0,
+            9.0,
+            110.0,
+            13.0,
+            6.0,
+            23.0
+          ],
+          "regions": [
+            [
+              4656,
+              10560
+            ],
+            [
+              23856,
+              32160
+            ],
+            [
+              47856,
+              56160
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 205,
+  "suites": [
+    {
+      "suite": "startup",
+      "passed": 2
+    },
+    {
+      "suite": "gui",
+      "passed": 16
+    },
+    {
+      "suite": "feature",
+      "passed": 32
+    },
+    {
+      "suite": "macro",
+      "passed": 23
+    },
+    {
+      "suite": "capacity",
+      "passed": 4
+    },
+    {
+      "suite": "layer",
+      "passed": 26
+    },
+    {
+      "suite": "lifecycle",
+      "passed": 28
+    },
+    {
+      "suite": "hardening",
+      "passed": 18
+    },
+    {
+      "suite": "edit",
+      "passed": 54
+    },
+    {
+      "suite": "loading",
+      "passed": 2
+    }
+  ]
+}

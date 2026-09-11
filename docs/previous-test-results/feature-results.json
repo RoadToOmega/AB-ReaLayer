@@ -1,0 +1,186 @@
+{
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 32,
+  "results": [
+    {
+      "test": "forward",
+      "status": "PASS",
+      "max_error": 5.960405457389184e-08
+    },
+    {
+      "test": "reverse",
+      "status": "PASS",
+      "max_error": 5.960350160476302e-08
+    },
+    {
+      "test": "mixed",
+      "status": "PASS",
+      "max_error": 5.960354687584157e-08
+    },
+    {
+      "test": "reverse_fractional",
+      "status": "PASS",
+      "max_error": 5.960161888335369e-08
+    },
+    {
+      "test": "reverse_down",
+      "status": "PASS",
+      "max_error": 5.960469168925231e-08
+    },
+    {
+      "test": "reverse_whole",
+      "status": "PASS",
+      "max_error": 5.960424283996124e-08
+    },
+    {
+      "test": "reverse_envelopes",
+      "status": "PASS",
+      "max_error": 5.960350160476302e-08
+    },
+    {
+      "test": "probability_25",
+      "status": "PASS",
+      "reverse_count": 20,
+      "triggers": 96
+    },
+    {
+      "test": "probability_75",
+      "status": "PASS",
+      "reverse_count": 80,
+      "triggers": 96
+    },
+    {
+      "test": "reverse_latched",
+      "status": "PASS"
+    },
+    {
+      "test": "clear_all",
+      "status": "PASS"
+    },
+    {
+      "test": "limiter_impulse_44100",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_sine_44100",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_burst_44100",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_quiet_44100",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_bypass_44100",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_impulse_48000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_sine_48000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_burst_48000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_quiet_48000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_bypass_48000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_impulse_96000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_sine_96000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_burst_96000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_quiet_96000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_bypass_96000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_impulse_192000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_sine_192000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_burst_192000",
+      "status": "PASS",
+      "peak": 0.9885530471801758,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_quiet_192000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_bypass_192000",
+      "status": "PASS",
+      "peak": 0.20000004768371582,
+      "guard_activations": 0
+    },
+    {
+      "test": "limiter_toggle",
+      "status": "PASS",
+      "max_step": 0.0042144060134887695
+    }
+  ]
+}

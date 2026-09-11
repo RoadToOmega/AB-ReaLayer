@@ -1,0 +1,10 @@
+{
+  "version": "0.11.1",
+  "author": "AB",
+  "description": "AB ReaLayer",
+  "changelog": [
+    "First ReaPack package of AB ReaLayer.",
+    "Four WAV layers, automatic variation detection, randomisation, Chaos and click or MIDI playback.",
+    "Reset Values and enlarged 1550 x 1000 opening window."
+  ]
+}

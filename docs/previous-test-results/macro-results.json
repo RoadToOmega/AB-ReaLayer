@@ -1,0 +1,99 @@
+{
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 23,
+  "results": [
+    {
+      "test": "button_matches_midi",
+      "status": "PASS"
+    },
+    {
+      "test": "button_solo",
+      "status": "PASS"
+    },
+    {
+      "test": "button_filtered",
+      "status": "PASS"
+    },
+    {
+      "test": "button_muted",
+      "status": "PASS"
+    },
+    {
+      "test": "button_voice_exhaustion",
+      "status": "PASS"
+    },
+    {
+      "test": "clear_discards_button",
+      "status": "PASS"
+    },
+    {
+      "test": "queue_bound",
+      "status": "PASS"
+    },
+    {
+      "test": "stale_button",
+      "status": "PASS"
+    },
+    {
+      "test": "panic_discards_button",
+      "status": "PASS"
+    },
+    {
+      "test": "random_ranges_100_patches",
+      "status": "PASS",
+      "assertions": 200
+    },
+    {
+      "test": "random_recall",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_enable_and_protection",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_recall",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_reroll",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_off_defaults_and_tail_hold",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_initial_on_normalized",
+      "status": "PASS"
+    },
+    {
+      "test": "chaos_parameter_lock",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_preserves_state_limiter_0",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_preserves_state_limiter_1",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_next_trigger_matches_defaults",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_idempotent_rng_unchanged",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_saved_state_recall",
+      "status": "PASS"
+    },
+    {
+      "test": "reset_exits_chaos_with_protected_tails",
+      "status": "PASS"
+    }
+  ]
+}

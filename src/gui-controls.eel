@@ -1,0 +1,100 @@
+// All drawing and input share logical coordinates; no offscreen size limit.
+function master_rect(x,y,w,h,r,g,b) (
+  gfx_set(r,g,b,1); gfx_rect(master_ox+x*master_scale,master_oy+(y+master_view_y)*master_scale,w*master_scale,h*master_scale);
+);
+function master_line(x,y,x2,y2,r,g,b) (
+  gfx_set(r,g,b,1); gfx_line(master_ox+x*master_scale,master_oy+(y+master_view_y)*master_scale,master_ox+x2*master_scale,master_oy+(y2+master_view_y)*master_scale);
+);
+function master_text(x,y,w,label,size,tone) (
+  gfx_setfont(1,"Arial",max(9,size*master_scale));
+  tone==2 ? gfx_set(.95,.72,.35) : tone==1 ? gfx_set(.38,.83,.76) : tone==3 ? gfx_set(.52,.58,.64) : gfx_set(.89,.92,.94);
+  gfx_x=master_ox+x*master_scale; gfx_y=master_oy+(y+master_view_y)*master_scale;
+  gfx_drawstr(label,0,master_ox+(x+w)*master_scale,master_oy+(y+master_view_y+size+7)*master_scale);
+);
+function master_hit(x,y,w,h) (master_mx>=x && master_mx<x+w && master_my>=y+master_view_y && master_my<y+master_view_y+h;);
+function master_button_ex(x,y,w,h,label,enabled,selected,tone) local(hover) (
+ hover=master_hit(x,y,w,h) && !master_modal;
+ tone==2 && selected ? master_rect(x,y,w,h,.29,.21,.12) :
+ master_rect(x,y,w,h,selected ? .16 : hover && enabled ? .22 : .13,selected ? .32 : hover && enabled ? .26 : .16,selected ? .31 : hover && enabled ? .3 : .2);
+ selected ? (tone==2 ? master_rect(x,y+h-2,w,2,.95,.67,.29) : master_rect(x,y+h-2,w,2,.38,.83,.76););
+ master_text(x+9,y+(h-16)/2,w-18,label,12,enabled ? (selected && tone==2 ? 2 : selected) : 3);
+ !enabled && hover ? #master_hint="Unavailable in the current state. Apply/discard a draft or finish loading first.";
+ enabled && hover && master_click;
+);
+function master_button(x,y,w,label,enabled,selected) (master_button_ex(x,y,w,28,label,enabled,selected,0););
+function master_elide(label,w,size) local(n,tw,th) (
+ gfx_setfont(1,"Arial",max(9,size*master_scale));strcpy(#master_elided,label);gfx_measurestr(#master_elided,tw,th);
+ tw>w*master_scale ? (
+  n=strlen(label);loop(n,n>0 && tw>w*master_scale ? (
+   n-=1;strcpy_substr(#master_elided,label,0,n);strcat(#master_elided,"...");gfx_measurestr(#master_elided,tw,th);
+  ););
+ );
+);
+function master_format(p,v) (
+  master_spec(p);
+  !strcmp(#master_unit,"pan") ? sprintf(#master_value,"%.0f %%",v*100) :
+  master_step>=1 ? sprintf(#master_value,"%.0f %s",v,#master_unit) :
+  master_step>=.1 ? sprintf(#master_value,"%.1f %s",v,#master_unit) : sprintf(#master_value,"%.2f %s",v,#master_unit);
+);
+function master_control(x,y,w,label,p,knob) local(v,n,a,cx,cy,r,hover,now,locked) (
+  v=master_get(p); master_spec(p);locked=master_action_locked(p);
+  n=(v-master_lo)/(master_hi-master_lo); p>=55 && p<=62 ? n=sqrt(n);
+  hover=master_hit(x,y,w,knob ? 108 : 44) && !master_modal && !master_action_locked(p);
+  master_text(x,y,w,label,12,3);
+  knob ? (
+    cx=master_ox+(x+w/2)*master_scale; cy=master_oy+(y+master_view_y+49)*master_scale; r=23*master_scale;
+    gfx_set(.055,.07,.09); gfx_circle(cx,cy,r+4*master_scale,1,1);
+    gfx_set(hover || master_drag==p ? .2 : .13,.19,.23); gfx_circle(cx,cy,r,1,1);
+    a=-2.35619449+n*4.71238898;
+    gfx_set(.28,.38,.42); gfx_arc(cx,cy,r+3*master_scale,-2.35619449,2.35619449,1);
+    gfx_set(.38,.83,.76); gfx_arc(cx,cy,r+3*master_scale,-2.35619449,a,1);
+    // gfx_arc uses angle zero at the top; match its orientation.
+    gfx_line(cx+sin(a)*r*.55,cy-cos(a)*r*.55,cx+sin(a)*r*.88,cy-cos(a)*r*.88);
+    master_format(p,v); master_text(x+4,y+82,w-8,#master_value,13,locked ? 2 : 0);
+  ) : (
+    master_rect(x,y+19,w-6,25,hover ? .2 : .1,.15,.19);
+    master_format(p,v);
+    (p==7 || p==19 || p==31 || p==43) ? sprintf(#master_value,"%.1f",v);
+    (p==9 || p==21 || p==33 || p==45) ? sprintf(#master_value,"%.2f",v);
+    master_text(x+6,y+23,w-16,#master_value,12,locked ? 2 : 0);
+    master_rect(x,y+42,(w-6)*max(0,min(1,n)),2,.23,.48,.47);
+  );
+  locked && master_hit(x,y,w,knob ? 108 : 44) && !master_modal ? #master_hint="Controlled by Chaos. Reset Values or switch Chaos off to edit this value.";
+  hover ? (
+    sprintf(#master_hint,"%s: drag up/down | Shift: fine | double-click: reset | right-click: type value",label);
+    master_click ? (
+      now=time_precise();
+      master_last_control==p && now-master_last_click<.32 ? (
+        master_put(p,master_default,1); master_last_control=0;
+      ) : (
+        master_drag=p; master_drag_y=master_my; master_drag_norm=n;
+        master_drag_last_y=master_my; master_last_control=p; master_last_click=now;
+      );
+    );
+    master_right_click ? (
+      master_focus=p; sprintf(#master_input,"%.4f",v); master_input_fresh=1;
+      strcpy(#master_input_label,label); #master_input_error="";
+    );
+  );
+);
+function master_finish() (
+  master_drag>0 && master_drag<100 ? master_notify(master_drag,1);
+  master_drag=0;
+);
+function master_numeric_commit() local(v,ok,i,c,digits,dots,signs) (
+  ok=1;digits=0;dots=0;signs=0;i=0;
+  loop(strlen(#master_input),c=str_getchar(#master_input,i);
+    c>=48 && c<=57 ? digits+=1 : c==46 ? dots+=1 : (c==45 || c==43) && i==0 ? signs+=1 : ok=0; i+=1;
+  );
+  ok && digits>0 && dots<=1 && signs<=1 && match("%f",#master_input,v) ? (
+    master_put(master_focus,v,1); master_focus=0;
+  ) : #master_input_error="Enter a number, using a decimal point if needed.";
+);
+
+// Measure each tooltip line; paths are not silently truncated to a fixed character width.
+function master_path_line(start) local(n,tw,th) (
+ strcpy_substr(#master_tip_part,#master_path_tooltip,start,196);n=strlen(#master_tip_part);
+ gfx_setfont(1,"Arial",max(9,12*master_scale));gfx_measurestr(#master_tip_part,tw,th);
+ while(n>1 && tw>1176*master_scale) (n-=1;strcpy_substr(#master_tip_part,#master_path_tooltip,start,n);gfx_measurestr(#master_tip_part,tw,th););
+ n;
+);

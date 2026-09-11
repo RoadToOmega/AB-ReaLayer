@@ -1,0 +1,89 @@
+// GUI-owned editable copy; audio reads only immutable bank tables.
+function edit_select(index) local(s,e,pad) (
+  edit_selected=max(0,min(edit_count-1,index));
+  s=edit_regions[edit_selected*2]; e=edit_regions[edit_selected*2+1];
+  pad=max(16,(e-s)*.15);
+  edit_view_start=max(0,floor(s-pad)); edit_view_end=min(edit_frames,ceil(e+pad));
+  edit_cursor=floor((s+e)/2);
+);
+function edit_begin() local(t,m,b) (
+  !edit_active && gui_loader.status!=1 && gui_loader.status!=3 && gui_loader.status!=4 ? (
+    t=edit_reader.pin_active();
+    t>0 ? (
+      b=token_bank(t); m=bank_meta+b*bank_stride;
+      edit_count=m[7]; edit_frames=m[1]; edit_channels=m[2]; edit_rate=m[3];
+      memcpy(edit_regions,region_base+b*region_stride,edit_count*2);
+      memcpy(edit_flags,region_base+b*region_stride+512,edit_count);
+      memcpy(edit_settings,m+10,6); strcpy(#edit_path,bank_paths[b]);
+      edit_token=t; edit_reader.unpin(t);
+      edit_count>0 ? (edit_active=1; edit_pending=0; edit_select(min(edit_count-1,floor(slider14)-1)););
+    );
+  );
+  edit_active;
+);
+function edit_boundary(which,frame) local(i,lo,hi) (
+  edit_active && !edit_pending ? (
+    i=edit_selected; frame=floor(frame);
+    which==1 ? (
+      lo=i>0 ? edit_regions[(i-1)*2+1] : 0;
+      hi=edit_regions[i*2+1]-1;
+      edit_regions[i*2]=max(lo,min(hi,frame));
+    ) : (
+      lo=edit_regions[i*2]+1;
+      hi=i+1<edit_count ? edit_regions[(i+1)*2] : edit_frames;
+      edit_regions[i*2+1]=max(lo,min(hi,frame));
+    );
+  );
+);
+function edit_split() local(i,j,s,e,c) (
+  i=edit_selected; s=edit_regions[i*2]; e=edit_regions[i*2+1]; c=floor(edit_cursor);
+  edit_active && !edit_pending && edit_count<256 && c>s && c<e ? (
+    j=edit_count;
+    loop(edit_count-i-1,
+      edit_regions[j*2]=edit_regions[(j-1)*2]; edit_regions[j*2+1]=edit_regions[(j-1)*2+1];
+      edit_flags[j]=edit_flags[j-1]; j-=1;
+    );
+    edit_regions[i*2+1]=c; edit_regions[(i+1)*2]=c; edit_regions[(i+1)*2+1]=e;
+    edit_flags[i+1]=edit_flags[i]; edit_count+=1;
+  );
+);
+function edit_merge() local(i,j) (
+  i=edit_selected;
+  edit_active && !edit_pending && i+1<edit_count ? (
+    edit_regions[i*2+1]=edit_regions[(i+1)*2+1]; j=i+1;
+    loop(edit_count-i-2,
+      edit_regions[j*2]=edit_regions[(j+1)*2]; edit_regions[j*2+1]=edit_regions[(j+1)*2+1];
+      edit_flags[j]=edit_flags[j+1]; j+=1;
+    );
+    edit_count-=1; edit_select(i);
+  );
+);
+function edit_toggle() (
+  edit_active && !edit_pending ? edit_flags[edit_selected]=!edit_flags[edit_selected];
+);
+function edit_discard() (
+  edit_pending ? gui_loader.cancel_load();
+  edit_pending=0; edit_active=0; edit_drag=0;
+);
+function edit_apply() local(req) (
+  edit_active && !edit_pending && atomic_get(active_token)==edit_token ? (
+    req=atomic_add(latest_request,1); gui_loader.mode=2;
+    gui_loader.begin_load(#edit_path,req,edit_frames,edit_channels,edit_rate);
+    gui_loader.status==1 ? edit_pending=1;
+  );
+);
+function edit_service() local(m,rp) (
+  edit_active && atomic_get(active_token)!=edit_token ? edit_discard();
+  edit_pending ? (
+    gui_loader.status<0 ? edit_pending=0;
+    gui_loader.status==4 && gui_loader.mode==2 ? (
+      m=gui_loader.meta; rp=region_base+gui_loader.bank*region_stride;
+      m[7]=edit_count; m[8]=0;
+      memcpy(rp,edit_regions,edit_count*2); memcpy(rp+512,edit_flags,edit_count);
+      memcpy(m+10,edit_settings,6);
+      gui_loader.publish_bank();
+      slider14=edit_selected+1; sliderchange(slider14);
+      edit_pending=0; edit_active=0; edit_drag=0;
+    );
+  );
+);

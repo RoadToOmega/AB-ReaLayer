@@ -1,0 +1,200 @@
+function edit_zoom(factor) local(mid,span) (
+  mid=(edit_view_start+edit_view_end)/2;span=max(16,min(edit_frames,(edit_view_end-edit_view_start)*factor));
+  edit_view_start=max(0,min(edit_frames-span,floor(mid-span/2)));edit_view_end=edit_view_start+span;
+);
+function edit_pan(direction) local(span) (
+  span=edit_view_end-edit_view_start;edit_view_start=max(0,min(edit_frames-span,floor(edit_view_start+direction*span*.5)));edit_view_end=edit_view_start+span;
+);
+function choose_region(index,audition) (
+  slider14=max(1,index+1); slider_automate(slider14,1);
+  audition ? atomic_set(preview_request,1);
+);
+function card() local(x,i,c) (
+ x=UI_CARD_X+LAYER_INDEX*UI_CARD_STEP;
+ master_rect(x,UI_CARD_Y,UI_CARD_W,UI_CARD_H,.095,.12,.15);
+ master_selected==LAYER_INDEX ? (
+  master_rect(x,UI_CARD_Y,UI_CARD_W,3,.38,.83,.76);
+  master_rect(x,UI_CARD_Y,2,UI_CARD_H,.38,.83,.76);
+ );
+ sprintf(#card_title,"0%d   LAYER %d",LAYER_NUMBER,LAYER_NUMBER);
+ master_text(x+12,151,150,#card_title,13,master_selected==LAYER_INDEX);
+ gui_loader.status==1 ? sprintf(#card_status,"LOAD %.0f%%",100*gui_loader.read_items/max(1,gui_loader.items)) :
+ gui_loader.status==3 ? #card_status="ANALYSING" : gui_loader.status==4 ? #card_status="PREVIEW" :
+ (gui_loader.status<0 && gui_loader.status!=-6) || restore_failed ? #card_status="LOAD ERROR" :
+ edit_active ? #card_status="EDIT DRAFT" : g_token>0 ? #card_status="READY" : #card_status="EMPTY";
+ master_text(x+192,153,88,#card_status,10,gui_loader.status==4 || gui_loader.status<0 || restore_failed || edit_active ? 2 : 3);
+ master_click && !master_modal && master_hit(x,UI_CARD_Y,UI_CARD_W,46) ? master_selected=LAYER_INDEX;
+ strcpy(#short_path,#display_path);i=strlen(#display_path)-1;
+ while(i>=0) (c=str_getchar(#display_path,i);c==47 || c==92 ? (strcpy_from(#short_path,#display_path,i+1);i=-1;) : i-=1;);
+ master_elide(g_frames>0 ? #short_path : "Drop WAV here",UI_CARD_W-24,12);
+ master_text(x+12,171,UI_CARD_W-24,#master_elided,12,g_frames>0 ? 0 : 1);
+ g_frames>0 && master_hit(x+12,169,UI_CARD_W-24,17) && !master_modal ? (strcpy(#master_path_tooltip,#display_path);strcpy(#master_hint,#display_path););
+ master_control(x+12,190,65,"Vol (dB)",BASE_PARAMETER,0);
+ master_control(x+77,190,65,"Pan",BASE_PARAMETER+1,0);
+ master_control(x+142,190,71,"Pitch (st)",BASE_PARAMETER+2,0);
+ master_control(x+213,190,66,"Reverse %",65+LAYER_INDEX,0);
+ master_button(x+12,238,70,slider(BASE_PARAMETER+3) ? "ON" : "MUTED",1,slider(BASE_PARAMETER+3)) ? master_put(BASE_PARAMETER+3,!slider(BASE_PARAMETER+3),1);
+ master_button(x+90,238,60,"SOLO",1,slider(BASE_PARAMETER+4)) ? master_put(BASE_PARAMETER+4,!slider(BASE_PARAMETER+4),1);
+ master_button(x+158,238,62,"Clear",1,0) ? (
+  edit_discard();gui_loader.cancel_load();atomic_add(latest_request,1);atomic_set(clear_request,1);
+  gui_loader.status=0;restore_failed=0;#ui_message="";sliderchange(-1);
+ );
+ sprintf(#card_voices,"%d voices",atomic_get(meter_voices));master_text(x+228,245,56,#card_voices,10,3);
+);
+function overview() local(i,x1,x2,x,w) (
+  x=36;w=UI_WAVE_W;
+  master_rect(20,292,UI_WORK_W,222,.065,.085,.105);
+  master_elide(#display_path,UI_WAVE_W,12);master_text(36,302,UI_WAVE_W,#master_elided,12,3);
+  g_frames>0 ? (
+    i=0;loop(g_count,
+      x1=x+10000[i*2]/g_frames*w;x2=x+10000[i*2+1]/g_frames*w;
+      master_rect(x1,335,max(1,x2-x1),131,g_preview ? .29 : i==g_selected ? .13 : .085,g_preview ? .23 : i==g_selected ? .28 : .18,.21);
+      master_line(x1,335,x1,466,.27,.53,.52);
+      x2-x1>24 ? (sprintf(#region_label,"%d",i+1); master_text(x1+4,339,x2-x1-4,#region_label,11,11000[i]>0 ? 0 : 3););
+      master_click && !master_modal && !edit_active && !g_preview && master_hit(x1,335,max(1,x2-x1),131) ? choose_region(i,0);
+      i+=1;
+    );
+    master_line(x,404,x+w,404,.13,.22,.25);
+    i=0;loop(256,
+      master_line(x+i*w/256,404-max(-1,min(1,9000[i*2+1]))*52,x+i*w/256,404-max(-1,min(1,9000[i*2]))*52,.38,.83,.76);i+=1;
+    );
+    sprintf(#info,"%.2f s   /   %d Hz   /   %d ch   /   %d regions%s",g_frames/g_rate,g_rate,g_channels,g_count,g_preview ? "   /   PREVIEW" : "");
+    master_text(36,483,UI_WAVE_W,#info,12,g_preview ? 2 : 3);
+  ) : (
+    master_text(180,379,550,"Drop a WAV with several separated sounds",20,0);
+    master_text(217,411,470,"Sounds are detected automatically and become playable variations.",12,3);
+  );
+);
+function status_line() (
+  gui_loader.status==1 ? sprintf(#status,"Loading WAV: %.0f%%",100*gui_loader.read_items/max(1,gui_loader.items)) :
+  gui_loader.status==3 ? sprintf(#status,"Analysing: %.0f%%",100*gui_loader.scan/max(1,gui_loader.meta[1])) : (
+    g_error=gui_loader.status<0 ? gui_loader.status : (restore_failed && g_token<=0 ? restore_loader.status : 0);
+    g_error==-1 ? #status="Cannot open WAV. Drop the file again to relink." :
+    g_error==-2 ? #status="Unsupported format. Use a mono or stereo WAV." :
+    g_error==-3 ? #status="Empty, malformed or oversized WAV. Maximum decoded size: 96 MiB per layer." :
+    g_error==-4 ? #status="Buffers busy. Let tails finish or press Stop All, then retry." :
+    g_error==-5 ? #status="Read failed or invalid audio. Previous applied bank preserved." :
+    g_error==-6 ? #status="Load or preview discarded." :
+    g_error==-7 ? #status="Source properties changed. Drop WAV to accept replacement." :
+    g_error==-8 ? #status="Invalid saved regions. Drop WAV to recover." :
+    g_error==-9 ? #status="Insufficient JSFX memory. This build requires about 770 MiB." :
+    g_overflow ? #status="More than 256 regions. Increase quiet gap or minimum duration." :
+    edit_active ? #status="Editing draft. MIDI plays the applied regions until Apply edits." :
+    g_preview ? #status="Detection preview ready. Apply to use these boundaries." :
+    gui_loader.status==2 && g_token!=gui_loader.request*4+gui_loader.bank+1 ? #status="Prepared: waiting for audio to adopt the new bank." :
+    g_dirty && g_token>0 ? #status="Detection settings changed. Reanalyse to preview new boundaries." :
+    strlen(#ui_message)>0 ? strcpy(#status,#ui_message) : #status="Click a region tile to audition. MIDI uses the chosen selection mode.";
+  );
+  atomic_get(snapshot_retry_exhausted) ? #status="State snapshot was busy. Save again after loading finishes.";
+  master_text(24,654,1192,#status,12,g_error<0 || g_preview || edit_active ? 2 : 3);
+);
+function edit_view() local(s,e,span,t,b,m,base,ch,i,j,f,lo,hi,px,frame,x,w) (
+  master_rect(20,292,UI_WORK_W,348,.065,.085,.105);
+  !edit_active ? (
+    master_text(40,363,740,"Edit individual variation boundaries",22,0);
+    master_text(40,398,740,"Trim, split, merge or exclude regions. Changes are applied together.",13,3);
+    master_button(40,440,160,"Begin region edit",g_token>0 && g_count>0 && !g_preview,0) ? edit_begin();
+  ) : (
+    master_button(36,304,48,"Prev",!edit_pending && edit_selected>0,0) ? edit_select(edit_selected-1);
+    master_button(90,304,48,"Next",!edit_pending && edit_selected+1<edit_count,0) ? edit_select(edit_selected+1);
+    sprintf(#info,"Region %d / %d%s",edit_selected+1,edit_count,edit_flags[edit_selected]>0 ? "" : "  [excluded]");master_text(151,311,254,#info,13,0);
+    master_button(405,304,66,"Zoom +",!edit_pending,0) ? edit_zoom(.5);
+    master_button(477,304,66,"Zoom -",!edit_pending,0) ? edit_zoom(2);
+    master_button(549,304,56,"Fit",!edit_pending,0) ? edit_select(edit_selected);
+    master_button(611,304,76,"View <",!edit_pending,0) ? edit_pan(-1);
+    master_button(693,304,76,"View >",!edit_pending,0) ? edit_pan(1);
+    x=36;w=UI_WAVE_W;span=max(1,edit_view_end-edit_view_start);
+    s=edit_regions[edit_selected*2];e=edit_regions[edit_selected*2+1];
+    master_rect(x,348,w,162,.045,.065,.08);
+    master_rect(x+max(0,(s-edit_view_start)/span*w),348,max(0,(min(edit_view_end,e)-max(edit_view_start,s))/span*w),162,.12,.25,.24);
+    t=edit_reader.pin_active(); t>0 ? (
+      t==edit_token ? (
+        b=token_bank(t);m=bank_meta+b*bank_stride;base=pcm_base+b*bank_capacity;ch=m[2];
+        i=0;loop(UI_WAVE_W,lo=1;hi=-1;j=0;loop(8,
+          f=max(0,min(edit_frames-1,floor(edit_view_start+(i+j/8)*span/UI_WAVE_W)));
+          lo=min(lo,base[f*ch]);hi=max(hi,base[f*ch]);
+          ch==2 ? (lo=min(lo,base[f*ch+1]);hi=max(hi,base[f*ch+1]););j+=1;
+        ); master_line(x+i,429-min(1,hi)*66,x+i,429-max(-1,lo)*66,.38,.83,.76);i+=1;);
+      );edit_reader.unpin(t);
+    );
+    s>=edit_view_start && s<=edit_view_end ? (px=x+(s-edit_view_start)/span*w;master_line(px,348,px,510,.95,.72,.35);master_text(px+4,351,34,"IN",11,2););
+    e>=edit_view_start && e<=edit_view_end ? (px=x+(e-edit_view_start)/span*w;master_line(px,348,px,510,.95,.72,.35);master_text(px-29,351,29,"OUT",11,2););
+    edit_cursor>=edit_view_start && edit_cursor<=edit_view_end ? (px=x+(edit_cursor-edit_view_start)/span*w;master_line(px,375,px,510,.61,.66,.81););
+    !master_modal && !edit_pending && master_click && master_hit(x,348,w,162) ? (
+      frame=floor(edit_view_start+(master_mx-x)/w*span);
+      abs(master_mx-(x+(s-edit_view_start)/span*w))<8 ? edit_drag=1 :
+      abs(master_mx-(x+(e-edit_view_start)/span*w))<8 ? edit_drag=2 : edit_cursor=frame;
+    );
+    edit_drag && (mouse_cap&1) && !edit_pending && !master_modal ? (
+      frame=floor(edit_view_start+(master_mx-x)/w*span);edit_boundary(edit_drag,frame);
+    );
+    !(mouse_cap&1) || master_modal ? edit_drag=0;
+    sprintf(#info,"IN %.5f s    OUT %.5f s    CURSOR %.5f s",s/edit_rate,e/edit_rate,edit_cursor/edit_rate);master_text(36,520,UI_WAVE_W,#info,12,3);
+    master_button(36,549,140,"Split at cursor",!edit_pending && edit_count<256 && edit_cursor>s && edit_cursor<e,0) ? edit_split();
+    master_button(182,549,146,"Merge with next",!edit_pending && edit_selected+1<edit_count,0) ? edit_merge();
+    master_button(334,549,140,edit_flags[edit_selected]>0 ? "Exclude region" : "Include region",!edit_pending,0) ? edit_toggle();
+    master_button(480,549,140,"Apply edits",!edit_pending,1) ? edit_apply();
+    master_button(626,549,166,"Discard edits",1,0) ? edit_discard();
+    master_text(36,590,UI_WAVE_W,edit_pending ? "Applying edits..." : "Drag IN / OUT handles. Click waveform to place the split cursor.",12,edit_pending ? 2 : 3);
+    master_text(36,612,UI_WAVE_W,"Apply before auditioning edited regions. The zoomed-out waveform is sampled.",12,3);
+  );
+);
+function sound_panel() local(base,env) (
+ base=BASE_PARAMETER;env=55+LAYER_INDEX*2;
+ master_rect(@SOUND_PANEL_RECT@,.095,.12,.15);
+ master_rect(860,286,360,3,.38,.83,.76);
+ sprintf(#info,"LAYER %d  /  SOUND",LAYER_NUMBER);master_text(878,303,324,#info,15,1);
+ master_text(878,344,324,"RANDOM AMOUNTS",11,3);
+ master_control(@RANDOM_PITCH@,"Pitch",base+9,1);
+ master_control(@RANDOM_GAIN@,"Gain",base+10,1);
+ master_control(@RANDOM_PAN@,"Pan",base+11,1);
+ master_line(878,496,1202,496,.18,.22,.26);
+ master_text(878,511,324,"ENVELOPE",11,3);
+ master_control(@ATTACK@,"Attack",env,1);
+ master_control(@RELEASE@,"End release",env+1,1);
+ master_text(878,664,324,"Random amounts set a +/- range.",12,3);
+ master_text(878,684,324,"Release fades toward the sample end.",12,3);
+ slider(69)>=.5 ? master_text(878,705,324,"Random amounts are controlled by Chaos.",11,2);
+);
+function workspace() local(i,idx,base,env) (
+ base=BASE_PARAMETER;env=55+LAYER_INDEX*2;
+  master_tab==1 ? edit_view() : (
+    overview();
+    master_tab==0 ? (
+      master_button(20,252,134,slider13>=.5 ? "Audition WAV" : "Audition Region",!edit_active && !g_preview && g_token>0 && (slider13>=.5 || g_count>0),1) ? atomic_set(preview_request,slider13>=.5 ? 2 : 1);
+      master_button(160,252,34,"<",!edit_active && !g_preview && g_selected>0,0) ? choose_region(g_selected-1,0);
+      master_button(200,252,34,">",!edit_active && !g_preview && g_selected+1<g_count,0) ? choose_region(g_selected+1,0);
+      master_button(240,252,112,slider13>=.5 ? "Whole WAV" : "Variations",!edit_active && !g_preview,0) ? master_put(base+7,slider13<.5,1);
+      g_mode=max(0,min(4,floor(slider15)));
+      g_mode==0 ? #mode_label="Random: no repeat" : g_mode==1 ? #mode_label="Shuffle bag" : g_mode==2 ? #mode_label="Round robin" : g_mode==3 ? #mode_label="Random" : #mode_label="Fixed region";
+      master_button(360,252,180,#mode_label,1,0) ? (
+        gfx_x=master_ox+360*master_scale;gfx_y=master_oy+(280+master_view_y)*master_scale;
+        g_choice=gfx_showmenu("Random: no repeat|Shuffle bag|Round robin|Random|Fixed region");g_choice>0 ? master_put(base+5,g_choice-1,1);
+      );
+      master_button(550,252,152,"Restart sequence",1,0) ? atomic_set(reset_request,1);
+      g_perpage=20;g_selected!=g_previous_selected ? g_page=floor(g_selected/g_perpage);g_previous_selected=g_selected;
+      g_pages=max(1,ceil(g_count/g_perpage));g_page=max(0,min(g_page,g_pages-1));
+      i=0;loop(20,idx=g_page*20+i;idx<g_count ? (
+        sprintf(#region_label,11000[idx]>0 ? "%02d" : "%02d off",idx+1);
+        master_button(20+(i%10)*79,526+floor(i/10)*34,73,#region_label,!edit_active && !g_preview,idx==g_selected) ? choose_region(idx,1);
+      );i+=1;);
+      master_button(20,602,76,"Page <",g_page>0,0) ? g_page-=1;
+      master_button(102,602,76,"Page >",g_page+1<g_pages,0) ? g_page+=1;
+      sprintf(#info,"%d / %d    |    Last MIDI region %d    |    Triggers %d",g_page+1,g_pages,atomic_get(meter_variation),atomic_get(meter_sequence));master_text(193,610,610,#info,12,3);
+    ) : (
+      master_button(20,252,120,"Reanalyse",g_token>0 && !edit_active && !edit_pending && gui_loader.status!=1 && gui_loader.status!=3,1) ? (
+        g_request=atomic_add(latest_request,1);gui_loader.mode=1;gui_loader.begin_load(#display_path,g_request,g_frames,g_channels,g_rate);#ui_message="";
+      );
+      master_button(146,252,106,"Apply",g_preview,1) ? gui_loader.publish_bank();
+      master_button(258,252,106,"Discard",g_preview || gui_loader.status==1 || gui_loader.status==3,0) ? gui_loader.cancel_load();
+      master_control(20,539,128,"Threshold",DETECT_PARAMETER,0);
+      master_control(152,539,128,"Hysteresis",DETECT_PARAMETER+1,0);
+      master_control(284,539,128,"Quiet gap",DETECT_PARAMETER+2,0);
+      master_control(416,539,128,"Min duration",DETECT_PARAMETER+3,0);
+      master_control(548,539,128,"Pre-roll",DETECT_PARAMETER+4,0);
+      master_control(680,539,128,"Tail",DETECT_PARAMETER+5,0);
+      master_text(24,607,774,"Adjust detection, then Reanalyse. Review the preview and Apply or Discard.",13,3);
+    );
+  );
+
+);

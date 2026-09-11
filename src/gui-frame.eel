@@ -1,0 +1,144 @@
+master_view_y=0;#master_path_tooltip="";
+master_visible=!(gfx_ext_flags&2);
+master_scale=max(.25,min(gfx_w/UI_W,gfx_h/UI_H));
+master_ox=(gfx_w-UI_W*master_scale)/2;master_oy=(gfx_h-UI_H*master_scale)/2;
+master_mx=(mouse_x-master_ox)/master_scale;master_my=(mouse_y-master_oy)/master_scale;
+master_modal=master_focus>0;
+master_click=(mouse_cap&1) && !(master_previous_mouse&1) && master_drag==0;
+master_right_click=(mouse_cap&2) && !(master_previous_mouse&2) && master_drag==0;
+master_selected=max(0,min(3,master_selected));
+master_char=gfx_getchar();
+master_keyboard_steps=0;
+while(master_char>0 && master_keyboard_steps<32) (
+  master_focus>0 ? (
+    master_char==13 ? master_numeric_commit() :
+    master_char==27 ? master_focus=0 :
+    master_char==8 ? (strcpy_substr(#master_input,#master_input,0,max(0,strlen(#master_input)-1));master_input_fresh=0;) :
+    (master_char>=48 && master_char<=57) || master_char==46 || master_char==45 || master_char==43 ? (
+      master_input_fresh ? (#master_input="";master_input_fresh=0;);
+      strlen(#master_input)<24 ? strcat(#master_input,sprintf(#master_key,"%c",master_char));
+    );
+  );
+  master_char=gfx_getchar();master_keyboard_steps+=1;
+);
+// Cancel gestures on close/focus loss/resize, avoiding coordinate jumps.
+master_visible && (gfx_getchar(65536)&2) ? master_has_focus=1 : master_has_focus=0;
+(master_previous_scale>0 && master_previous_scale!=master_scale) || !master_visible || (master_was_focused && !master_has_focus) ? (
+  master_finish();master_focus=0;
+);
+master_previous_scale=master_scale;master_was_focused=master_has_focus;
+master_drag>0 && (mouse_cap&1) && master_visible ? (
+  master_spec(master_drag);
+  master_drag_norm=max(0,min(1,master_drag_norm+(master_drag_last_y-master_my)/180*((mouse_cap&8) ? .1 : 1)));
+  master_drag_last_y=master_my;
+  master_n=master_drag_norm;master_drag>=55 && master_drag<=62 ? master_n*=master_n;
+  master_new=master_lo+master_n*(master_hi-master_lo);
+  abs(master_get(master_drag)-master_new)>=master_step*.49 ? master_put(master_drag,master_new,0);
+);
+!(mouse_cap&1) ? master_finish();
+// Time-budgeted round-robin work, including while the GUI is hidden.
+master_pump_loaders();
+// SERVICE
+// Multiple WAV drops use consecutive slots, with overflow rejected as a group.
+gfx_getdropfile(0,#master_drop) ? (
+  master_drop_target=master_selected;
+  master_hit(UI_CARD_X,UI_CARD_Y,UI_CARD_STEP*4,UI_CARD_H) ? master_drop_target=max(0,min(3,floor((master_mx-UI_CARD_X)/UI_CARD_STEP)));
+  master_drop_count=1;loop(4,gfx_getdropfile(master_drop_count,#master_extra) ? master_drop_count+=1;);
+  master_drop_count>4-master_drop_target ? #master_message="Too many WAVs for the remaining slots. Start on Layer 1 for four WAVs." : (
+    master_finish();master_focus=0;master_drop_i=0;
+    loop(master_drop_count,gfx_getdropfile(master_drop_i,#master_drop);master_drop_layer=master_drop_target+master_drop_i;
+      // DROP
+      master_drop_i+=1;
+    );master_selected=master_drop_target;#master_message="";
+  );gfx_getdropfile(-1);
+);
+master_visible ? (
+ #master_hint="Drop WAVs on the layer cards. Select a layer to shape its sound.";
+ // SNAPSHOTS
+ gfx_dest=-1;gfx_set(.04,.05,.065);gfx_rect(0,0,gfx_w,gfx_h);
+ master_rect(0,0,UI_W,UI_H,.055,.07,.09);
+ master_rect(0,0,UI_W,76,.085,.105,.13);
+ master_text(22,18,470,"AB Rea/Layer",23,0);
+ master_text(24,45,470,"Multilayer Random Variation Sampler for REAPER     V0.11.1",10,1);
+ master_control(@MASTER@,"Master output",1,0);
+ master_button(@LIMITER@,atomic_get(master_protection)==3 ? "Limiter: tails" : slider64>=.5 ? "Limiter ON" : "Limiter OFF",!master_action_locked(64),slider64>=.5) ? master_put(64,slider64<.5,1);
+ sprintf(#master_gr,"GR %.1f dB  /  -0.1 dBFS",atomic_get(limiter_meter));master_text(710,54,158,#master_gr,10,3);
+ master_button(@SETTINGS@,"Settings",1,master_settings) ? master_settings=!master_settings;
+ master_meter_l=max(atomic_get(master_meter_left),master_meter_l*.88);
+ master_meter_r=max(atomic_get(master_meter_right),master_meter_r*.88);
+ master_meter=max(master_meter_l,master_meter_r);
+ master_meter>=1 ? master_clip_until=time_precise()+2;
+ master_text(880,12,176,"OUTPUT  L / R",10,3);
+ master_rect(880,31,176,6,.03,.045,.055);master_rect(880,41,176,6,.03,.045,.055);
+ master_rect(880,31,176*max(0,min(1,(20*log10(max(.000001,master_meter_l))+60)/60)),6,.38,.83,.76);
+ master_rect(880,41,176*max(0,min(1,(20*log10(max(.000001,master_meter_r))+60)/60)),6,.38,.83,.76);
+ sprintf(#master_peak_label,time_precise()<master_clip_until ? "CLIP  %.1f dBFS" : "%.1f dBFS",20*log10(max(.000001,master_meter)));
+ master_text(880,54,176,#master_peak_label,11,time_precise()<master_clip_until ? 2 : 3);
+ master_button(@RANDOM@,slider69>=.5 ? "Reroll Chaos" : "Randomise All",1,0) ? (master_finish();master_request(1););
+ master_button(@RESET_SOUND@,"Reset Values",1,0) ? (master_finish();master_request(4););
+ master_button_ex(@CHAOS_RECT@,slider69>=.5 ? "CHAOS ON" : "Chaos OFF",1,slider69>=.5,2) ? (master_finish();master_request(2););
+ master_text(512,98,500,slider69>=.5 ? "Extreme variation  /  limiter protected" : "Sound actions apply to all four layers",12,slider69>=.5 ? 2 : 3);
+ master_hit(@RESET_SOUND_RECT@) ? #master_hint="Reset all layer sound values. Keep WAVs, edits, master output and selection settings.";
+ master_button(@CLEAR_ALL@,time_precise()<master_clear_until ? "Confirm clear all" : "Clear All Layers",1,0) ? (
+  time_precise()<master_clear_until ? (master_clear_layers();master_clear_until=0;) : master_clear_until=time_precise()+3;
+ );
+ // CARDS
+ master_button(@VARIATIONS@,"Variations",1,master_tab==0 && !master_settings) ? (master_tab=0;master_settings=0;);
+ master_button(@EDIT@,"Edit",1,master_tab==1 && !master_settings) ? (master_tab=1;master_settings=0;);
+ master_button(@DETECT@,"Detect",1,master_tab==2 && !master_settings) ? (master_tab=2;master_settings=0;);
+ sprintf(#master_workspace_label,master_settings ? "INSTRUMENT SETTINGS" : "LAYER %d WORKSPACE",master_selected+1);
+ master_text(370,295,464,#master_workspace_label,11,3);
+ master_view_y=UI_WORK_DY;
+ master_settings ? (
+  master_rect(20,252,UI_WORK_W,388,.065,.085,.105);
+  master_text(40,271,780,"INSTRUMENT SETTINGS",17,1);
+  master_control(40,314,150,"MIDI channel (0 = all)",2,0);
+  master_control(216,314,168,"Trigger note (-1 = all)",3,0);
+  master_control(410,314,150,"Edge fade",4,0);
+  master_control(596,314,196,"Reset CC (-1 = off)",6,0);
+  master_button(40,390,280,slider5<.5 ? "Restart: transport start + manual" : "Restart: manual only",1,0) ? master_put(5,slider5<.5,1);
+  master_button(340,390,190,"Restart all sequences",1,0) ? atomic_set(master_reset_request,1);
+  master_button(550,390,190,"Stop selected layer",1,0) ? (
+   master_selected==0 ? atomic_set(l1_panic_request,1);master_selected==1 ? atomic_set(l2_panic_request,1);
+   master_selected==2 ? atomic_set(l3_panic_request,1);master_selected==3 ? atomic_set(l4_panic_request,1);
+  );
+  master_control(40,453,280,"Selected layer: random seed",13+master_selected*12,0);
+  master_control(340,453,250,"Audition / fixed region",15+master_selected*12,0);
+  master_text(40,530,780,"Seed and selection-mode changes restart that layer's sequence.",13,3);
+  master_text(40,557,780,"Pan numeric entry uses -1 to +1; the display uses percentages.",13,3);
+  master_text(40,584,780,"End release fades the sample end. MIDI note-off does not shorten a one-shot.",13,3);
+ ) : (
+  // SELECTED
+ );
+ // STATUS_SELECTED
+ master_view_y=0;
+ // SOUND_SELECTED
+ master_rect(0,744,UI_W,56,.075,.095,.12);
+ master_text(22,755,848,strlen(#master_message)>0 ? #master_message : #master_hint,11,strlen(#master_message)>0 ? 2 : 3);
+ sprintf(#master_diagnostics,"Rejected %d  |  MIDI overflow %d",atomic_get(master_meter_rejected),atomic_get(master_meter_overflow));master_text(22,778,840,#master_diagnostics,10,3);
+ master_button_ex(@STOP_ALL_RECT@,"Stop All",1,0,0) ? atomic_set(master_panic_request,1);
+ master_button_ex(@PLAY_SAMPLER_RECT@,"Play Sampler",1,1,0) ? master_request(3);
+ master_hit(@STOP_ALL_RECT@) ? #master_hint="Panic: release all sounding voices and cancel pending Play requests.";
+ strlen(#master_path_tooltip)>0 && !master_modal ? (
+  master_tip_pos=0;master_tip_lines=0;
+  while(master_tip_pos<strlen(#master_path_tooltip)) (master_tip_pos+=master_path_line(master_tip_pos);master_tip_lines+=1;);
+  master_tip_y=734-master_tip_lines*17;
+  master_rect(20,master_tip_y-10,1200,master_tip_lines*17+18,.16,.2,.25);
+  master_tip_line=0;master_tip_pos=0;loop(master_tip_lines,
+   master_tip_pos+=master_path_line(master_tip_pos);
+   master_text(32,master_tip_y+master_tip_line*17,1176,#master_tip_part,12,0);master_tip_line+=1;
+  );
+ );
+ master_focus>0 ? (
+  master_rect(@MODAL_RECT@,.16,.2,.25);
+  master_text(379,328,482,#master_input_label,18,0);
+  master_rect(379,365,482,36,.06,.08,.105);
+  master_text(390,373,460,#master_input,17,0);
+  master_text(379,413,482,strlen(#master_input_error)>0 ? #master_input_error : "Type a value. Enter to apply, Esc to cancel.",12,strlen(#master_input_error)>0 ? 2 : 3);
+  master_rect(@NUM_APPLY_RECT@,.19,.36,.34);master_text(390,455,104,"Apply",12,0);
+  master_rect(@NUM_CANCEL_RECT@,.12,.15,.19);master_text(530,455,104,"Cancel",12,0);
+  master_click && master_hit(@NUM_APPLY_RECT@) ? master_numeric_commit();
+  master_click && master_hit(@NUM_CANCEL_RECT@) ? (master_focus=0;);
+ );
+);
+master_previous_mouse=mouse_cap;

@@ -1,0 +1,172 @@
+{
+  "host": "REAPER 7.79 Linux x86_64",
+  "source_sha256": "4a42f8e96529f9b24f48295025b8f25d14c668a71bd14b678b6c9fb0e34f8ac0",
+  "passed": 18,
+  "results": [
+    {
+      "test": "scheduler_mask_1",
+      "status": "PASS",
+      "decoded_items": [
+        65536.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_2",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        65536.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_3",
+      "status": "PASS",
+      "decoded_items": [
+        32768.0,
+        32768.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_4",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        0.0,
+        65536.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_5",
+      "status": "PASS",
+      "decoded_items": [
+        32768.0,
+        0.0,
+        32768.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_6",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        32768.0,
+        32768.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_7",
+      "status": "PASS",
+      "decoded_items": [
+        16384.0,
+        32768.0,
+        16384.0,
+        0.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_8",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        0.0,
+        0.0,
+        65536.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_9",
+      "status": "PASS",
+      "decoded_items": [
+        32768.0,
+        0.0,
+        0.0,
+        32768.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_10",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        32768.0,
+        0.0,
+        32768.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_11",
+      "status": "PASS",
+      "decoded_items": [
+        16384.0,
+        32768.0,
+        0.0,
+        16384.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_12",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        0.0,
+        32768.0,
+        32768.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_13",
+      "status": "PASS",
+      "decoded_items": [
+        16384.0,
+        0.0,
+        32768.0,
+        16384.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_14",
+      "status": "PASS",
+      "decoded_items": [
+        0.0,
+        32768.0,
+        16384.0,
+        16384.0
+      ]
+    },
+    {
+      "test": "scheduler_mask_15",
+      "status": "PASS",
+      "decoded_items": [
+        16384.0,
+        16384.0,
+        16384.0,
+        16384.0
+      ]
+    },
+    {
+      "test": "invalid_magic",
+      "status": "PASS",
+      "nonzero_samples": 0
+    },
+    {
+      "test": "unsupported_version",
+      "status": "PASS",
+      "nonzero_samples": 0
+    },
+    {
+      "test": "truncated_header",
+      "status": "PASS",
+      "nonzero_samples": 0
+    }
+  ]
+}

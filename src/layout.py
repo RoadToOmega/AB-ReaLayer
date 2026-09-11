@@ -1,0 +1,9 @@
+"""Single source of truth for local-memory addresses, measured in double slots."""
+BANK_CAPACITY = 12582912  # 96 MiB decoded PCM
+METADATA_SLOTS = 65536
+STRIDE = METADATA_SLOTS + 2 * BANK_CAPACITY
+LAYER_END = 4 * STRIDE
+LIMITER_BASE = LAYER_END
+LIMITER_SLOTS = 32768
+MAXMEM = LAYER_END + LIMITER_SLOTS
+TEST_GFX_BASE = 3 * STRIDE + METADATA_SLOTS + BANK_CAPACITY  # unused spare in fixtures
