@@ -19,7 +19,7 @@ https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/main/index.xml
 ```
 
 Open Extensions → ReaPack → Browse packages, search AB ReaLayer, mark it for installation and click Apply. 
-Then add JS: AB_ReaLayer to a track.
+Restart Reaper -> Then add JS: AB_ReaLayer to a track.
 
 ## Quick Start 
 Drag and drop up to 4 WAV files containing variations onto a layer, let detection finish, then press Play Sampler or trigger it with MIDI.
