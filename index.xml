@@ -37,7 +37,7 @@ Audio processing and controls are unchanged.]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Install through ReaPack\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Import this repository URL in {\b Extensions \u8594 ? ReaPack \u8594 ? Import repositories}:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/main/index.xml\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Open Extensions \u8594 ? ReaPack \u8594 ? Browse packages, search AB ReaLayer, mark it for installation and click Apply. Then add JS: AB_ReaLayer to a track.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Open Extensions \u8594 ? ReaPack \u8594 ? Browse packages, search AB ReaLayer, mark it for installation and click Apply. Restart Reaper -> Then add JS: AB_ReaLayer to a track.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Quick Start\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Drag and drop up to 4 WAV files containing variations onto a layer, let detection finish, then press Play Sampler or trigger it with MIDI.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Only the JSFX is installed; no companion script, Python or Ruby is needed to use it. Source WAVs are not bundled.\par}
