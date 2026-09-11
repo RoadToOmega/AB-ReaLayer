@@ -8,7 +8,7 @@ This folder is a repository starter, not a live GitHub repository. It includes a
 2. Create a new public repository named **AB-ReaLayer**, with default branch **main**. Leave GitHub's README, .gitignore and licence initialisation unchecked because this folder supplies the project files.
 3. Extract the starter ZIP and open its AB-ReaLayer folder. Include the .github directory and the dot-prefixed configuration files; Finder may hide them until you press Command+Shift+Period.
 4. Replace YOUR_GITHUB_USERNAME in README.md with your GitHub username. If you chose another repository name, update the example URL too.
-5. Review release.json. The publishing author is set to the product brand **AB**; replace it with your preferred credit if desired. Run python3 src/build.py after changing it.
+5. Review release.json. The publishing author is **Alec Bathman**; keep this credit for the official AB ReaLayer release. Run python3 src/build.py after changing it.
 6. Choose your distribution licence and add LICENSE. No licence has been assigned on your behalf.
 
 ## 2. Upload with Git
