@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Bootstrap only. GitHub Actions populates packages and immutable download URLs. -->
-<index version="1" name="AB ReaLayer" commit="32b871ad89ae8b8c7ef43bd0596671ded825e0e8">
+<index version="1" name="AB ReaLayer" commit="2c0d54d2651d06c1319413eaa595bbfdfea3e611">
   <category name="Instruments">
-    <reapack name="VariationSampler-M11.jsfx" type="effect" desc="AB ReaLayer">
+    <reapack name="AB_ReaSampler.jsfx" type="effect" desc="AB ReaLayer">
       <metadata>
         <description><![CDATA[{\rtf1\ansi\deff0{\fonttbl{\f0 \fswiss Helvetica;}{\f1 \fmodern Courier;}}
 {\colortbl;\red255\green0\blue0;\red0\green0\blue255;}
@@ -12,17 +12,12 @@
 }
 ]]></description>
       </metadata>
-      <version name="0.11.1" author="AB" time="2026-09-11T08:18:28Z">
-        <changelog><![CDATA[First ReaPack package of AB ReaLayer.
-Four WAV layers, automatic variation detection, randomisation, Chaos and click or MIDI playback.
-Reset Values and enlarged 1550 x 1000 opening window.]]></changelog>
-        <source>https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/479470122fbadd5c2709c6b9e762144fde7ffefb/Instruments/VariationSampler-M11.jsfx</source>
-      </version>
-      <version name="0.11.2" author="Alec Bathman" time="2026-09-11T09:19:22Z">
-        <changelog><![CDATA[Publish the Alec Bathman header and game-audio description under a new version.
-Resolve the ReaPack catalogue conflict caused by differing 0.11.1 files in Git history.
-Sampler audio and GUI behaviour are unchanged.]]></changelog>
-        <source>https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/32b871ad89ae8b8c7ef43bd0596671ded825e0e8/Instruments/VariationSampler-M11.jsfx</source>
+      <version name="0.11.3" author="Alec Bathman" time="2026-09-11T10:05:18Z">
+        <changelog><![CDATA[Rename the installable file to AB_ReaSampler.jsfx.
+Update generator, checks, documentation and test-runner paths.
+Install the renamed ReaPack package for new instances; retain legacy installations for saved projects.
+Audio processing and controls are unchanged.]]></changelog>
+        <source>https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/2c0d54d2651d06c1319413eaa595bbfdfea3e611/Instruments/AB_ReaSampler.jsfx</source>
       </version>
     </reapack>
   </category>
@@ -43,8 +38,8 @@ Sampler audio and GUI behaviour are unchanged.]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 Import this repository URL in {\b Extensions \u8594 ? ReaPack \u8594 ? Import repositories}:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/main/index.xml\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Only the JSFX is installed; no companion script, Python or Ruby is needed to use it. Source WAVs are not bundled.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Existing manual installations\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Keep the old manually installed file if saved projects reference it. ReaPack installs into its own repository/category directory and does not automatically migrate those project references. Use the ReaPack-managed copy for new instances. Keep the repository name and Instruments/VariationSampler-M11.jsfx path stable after publication.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Existing installations and the 0.11.3 filename change\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Version 0.11.3 uses {\f1 AB_ReaSampler.jsfx} and appears as a new package identity in ReaPack. Synchronize the repository, then select this filename in Browse packages and install it for new instances. Keep the old installed file if saved projects reference it. If ReaPack offers to uninstall an obsolete package, retain it until those projects have been migrated. ReaPack installs into its own repository/category directory and does not automatically migrate those project references. Use the ReaPack-managed copy for new instances. Keep the repository name and Instruments/AB_ReaSampler.jsfx path stable after publication.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Requirements and limits\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A 64-bit REAPER installation with enough free memory is recommended. Each instance preallocates about 770 MiB plus host overhead. Each layer accepts up to 96 MiB of decoded PCM, approximately 65.5 seconds of 96 kHz stereo audio. The limiter adds approximately 2 ms of fixed delay, including when OFF. It limits sample peaks, not true peaks. WAV files remain external.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Documentation\par}
@@ -68,7 +63,7 @@ Workstation checks
 {\pard \ql \f0 \sa180 \li0 \fi0 Edit src/ and release.json, then run:\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \f1 python3 src/build.py\line
 python3 tools/check_package.py\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Commit the generated Instruments/VariationSampler-M11.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.\par}
+{\pard \ql \f0 \sa180 \li0 \fi0 Commit the generated Instruments/AB_ReaSampler.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Licence\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Copyright \u169 ? 2026 Alec Bathman.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 AB ReaLayer is free to use for personal and commercial audio work, including games, films, music and client projects.\par}
