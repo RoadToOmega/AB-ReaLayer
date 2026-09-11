@@ -18,6 +18,12 @@ Import this repository URL in **Extensions → ReaPack → Import repositories**
 https://raw.githubusercontent.com/RoadToOmega/AB-ReaLayer/main/index.xml
 ```
 
+Open Extensions → ReaPack → Browse packages, search AB ReaLayer, mark it for installation and click Apply. 
+Then add JS: AB_ReaLayer to a track.
+
+## Quick Start 
+Drag and drop up to 4 WAV files containing variations onto a layer, let detection finish, then press Play Sampler or trigger it with MIDI.
+
 Only the JSFX is installed; no companion script, Python or Ruby is needed to use it. Source WAVs are not bundled.
 
 
