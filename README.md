@@ -12,8 +12,6 @@
 
 ## Install through ReaPack
 
-The maintainer must complete the first successful ReaPack workflow run before this URL contains a package.
-
 Import this repository URL in **Extensions → ReaPack → Import repositories**:
 
 ```text
