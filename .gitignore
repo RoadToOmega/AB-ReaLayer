@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+.venv/
+.env
+.env.*
+*.wav
+*.WAV
+*.rpp
+*.RPP
+*.RPP-bak
+*.reapeaks
+*.zip
+/test-output/
+/VariationSampler-M11.jsfx
