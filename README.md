@@ -31,23 +31,6 @@ Only the JSFX is installed; no companion script, Python or Ruby is needed to use
 
 A 64-bit REAPER installation with enough free memory is recommended. Each instance preallocates about 770 MiB plus host overhead. Each layer accepts up to 96 MiB of decoded PCM, approximately 65.5 seconds of 96 kHz stereo audio. The limiter adds approximately 2 ms of fixed delay, including when OFF. It limits sample peaks, not true peaks. WAV files remain external.
 
-## Documentation
-
-- [User guide](docs/USER-GUIDE.md)
-- [Architecture](docs/ARCHITECTURE.md)
-- [Workstation checks](docs/ACCEPTANCE.md)
-
-## Development
-
-Edit src/ and release.json, then run:
-
-```sh
-python3 src/build.py
-python3 tools/check_package.py
-```
-
-Commit the generated Instruments/AB_ReaSampler.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.
-
 ## Licence
 
 Copyright © 2026 Alec Bathman.
