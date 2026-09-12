@@ -43,24 +43,6 @@ Audio processing and controls are unchanged.]]></changelog>
 {\pard \ql \f0 \sa180 \li0 \fi0 Only the JSFX is installed; no companion script, Python or Ruby is needed to use it. Source WAVs are not bundled.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Requirements and limits\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 A 64-bit REAPER installation with enough free memory is recommended. Each instance preallocates about 770 MiB plus host overhead. Each layer accepts up to 96 MiB of decoded PCM, approximately 65.5 seconds of 96 kHz stereo audio. The limiter adds approximately 2 ms of fixed delay, including when OFF. It limits sample peaks, not true peaks. WAV files remain external.\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Documentation\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "docs/USER-GUIDE.md"}}{\fldrslt{\ul
-User guide
-}}}
-\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "docs/ARCHITECTURE.md"}}{\fldrslt{\ul
-Architecture
-}}}
-\par}
-{\pard \ql \f0 \sa0 \li360 \fi-360 \bullet \tx360\tab {\field{\*\fldinst{HYPERLINK "docs/ACCEPTANCE.md"}}{\fldrslt{\ul
-Workstation checks
-}}}
-\sa180\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Development\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Edit src/ and release.json, then run:\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 \f1 python3 src/build.py\line
-python3 tools/check_package.py\par}
-{\pard \ql \f0 \sa180 \li0 \fi0 Commit the generated Instruments/AB_ReaSampler.jsfx with your source changes. GitHub Actions checks the build and updates index.xml. Future plugin releases must increment the version in release.json.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 \outlinelevel1 \b \fs32 Licence\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 Copyright \u169 ? 2026 Alec Bathman.\par}
 {\pard \ql \f0 \sa180 \li0 \fi0 AB ReaLayer is free to use for personal and commercial audio work, including games, films, music and client projects.\par}
